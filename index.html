@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -418,14 +418,14 @@ nav.scrolled {
 }
 .mega-cell { position:relative; overflow:hidden; }
 .mega-cell::after {
-  content:'MEMORÉ ✦ MEMORÉ ✦ MEMORÉ';
+  content:'MEMORÉ ✦ MEMORÉ ✦ MEMORÉ ✦ MEMORÉ';
   position:absolute; inset:0;
   display:flex; align-items:center; justify-content:center;
-  font-size:.38rem; letter-spacing:.18em; text-transform:uppercase;
-  color:rgba(255,255,255,.28); pointer-events:none;
-  font-family:'Outfit',sans-serif; font-weight:300;
-  transform:rotate(-20deg); white-space:nowrap;
-  z-index:3;
+  font-size:.55rem; letter-spacing:.2em; text-transform:uppercase;
+  color:rgba(255,255,255,.55); pointer-events:none;
+  font-family:'Outfit',sans-serif; font-weight:600;
+  transform:rotate(-25deg); white-space:nowrap;
+  z-index:3; text-shadow:0 1px 3px rgba(0,0,0,.4);
 }
 .mega-montage img {
   width:100%; height:100%;
@@ -903,27 +903,37 @@ nav.scrolled {
 .sheet-card {
   position:relative; cursor:pointer;
   border:2px solid transparent; transition:border-color .2s, transform .15s;
-  overflow:hidden; aspect-ratio:1; background:var(--ivory-dark);
+  overflow:hidden; background:var(--ivory-dark);
+  display:flex; flex-direction:column;
 }
 .sheet-card:hover:not(.sheet-all) { transform:scale(1.03); }
 .sheet-card.selected { border-color:var(--gold); }
-.sheet-card img { width:100%; height:100%; object-fit:cover; display:block; }
+.sheet-card img { width:100%; height:auto; object-fit:contain; display:block; padding:5px 5px 0; box-sizing:border-box; }
+.sheet-card::after {
+  content:'MEMORÉ ✦ MEMORÉ ✦ MEMORÉ';
+  position:absolute; inset:0; bottom:28px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.44rem; letter-spacing:.16em; text-transform:uppercase;
+  color:rgba(30,46,42,.48); pointer-events:none;
+  font-family:'Outfit',sans-serif; font-weight:600;
+  transform:rotate(-25deg); white-space:nowrap;
+  z-index:2;
+}
 .sheet-fallback {
-  display:none; width:100%; height:100%;
+  display:none; width:100%; min-height:160px;
   align-items:center; justify-content:center;
   font-family:'Cormorant Garamond',serif;
   font-size:1.6rem; color:var(--warm); flex-direction:column; gap:4px;
 }
 .sheet-num {
-  position:absolute; bottom:0; left:0; right:0;
   font-size:.58rem; letter-spacing:.12em; text-transform:uppercase;
-  background:rgba(30,46,42,.72); color:var(--ivory);
-  padding:4px 6px; text-align:center;
+  background:rgba(30,46,42,.88); color:var(--ivory);
+  padding:5px 6px; text-align:center; flex-shrink:0;
 }
 .sheet-check {
   position:absolute; top:6px; right:6px;
   width:20px; height:20px; background:var(--gold); border-radius:50%;
-  display:none; align-items:center; justify-content:center;
+  display:none; align-items:center; justify-content:center; z-index:10;
 }
 .sheet-check svg { width:10px; height:10px; }
 .sheet-card.selected .sheet-check { display:flex; }
@@ -1428,7 +1438,7 @@ footer {
           <div class="mega-price-de">de <s>R$ 358,20</s></div>
           <div class="mega-price-por"><span>por</span><div class="mega-pack-price"><sup>R$</sup> 129<sub>,90</sub></div></div>
         </div>
-        <a href="#mega-kirvano" class="btn-mega-pack">Comprar Coleção →</a>
+        <a href="#" class="btn-mega-pack" onclick="buyMegaPack();return false">Comprar Coleção →</a>
       </div>
     </div>
     <div class="mega-montage">
@@ -1483,8 +1493,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-pokemon-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-pokemon-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1508,8 +1518,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-dbz-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-dbz-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1533,8 +1543,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-kpop-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-kpop-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1558,8 +1568,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-capibara-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-capibara-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1583,8 +1593,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-anime-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-anime-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1608,8 +1618,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-hellokitty-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-hellokitty-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1633,8 +1643,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-digimon-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-digimon-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1658,8 +1668,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-infantil-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-infantil-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1683,8 +1693,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-pets-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-pets-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1708,8 +1718,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-cat-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-cat-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1733,8 +1743,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-carros-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-carros-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1758,8 +1768,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-prof-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-prof-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1783,8 +1793,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-variados-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-variados-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1808,8 +1818,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-crianca-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-crianca-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1833,8 +1843,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-dbz2-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-dbz2-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1858,8 +1868,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-desenhos-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-desenhos-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1883,8 +1893,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-bebesfrutas-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-bebesfrutas-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -1908,8 +1918,8 @@ footer {
       </div>
       <div class="pk-bottom">
         <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
-        <a href="#kirvano-desenhos2-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
-        <a href="#kirvano-desenhos2-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+        <a href="#" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
       </div>
     </div>
 
@@ -2845,6 +2855,22 @@ function toast(msg) {
   el.textContent=msg; el.classList.add('on');
   clearTimeout(toastT);
   toastT = setTimeout(() => el.classList.remove('on'), 3800);
+}
+
+// ── MEGA PACK ─────────────────────────────────────────────────
+function buyMegaPack() {
+  const allDriveIds = Object.values(DRIVE_MAP).flatMap(t => t.folhas);
+  cart = cart.filter(c => c.temaKey !== 'mega');
+  cartAdd({
+    temaKey:  'mega',
+    temaNome: 'Mega Pack — Todos os Temas',
+    plan:     'Coleção Completa',
+    price:    129.90,
+    sheets:   allDriveIds.map((_, i) => i),
+    driveIds: allDriveIds,
+  });
+  openCart();
+  toast('Mega Pack adicionado ao carrinho! ✓');
 }
 
 // ── INIT ──────────────────────────────────────────────────────
