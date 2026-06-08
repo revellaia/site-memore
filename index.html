@@ -7,8 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="apple-touch-icon" href="favicon.svg">
 <style>
 :root {
   --ivory:      #F6F1E9;
@@ -49,15 +47,18 @@ body::after {
 nav {
   position:fixed; top:0; left:0; right:0; z-index:500;
   padding:26px 60px;
+  background:rgba(246,241,233,.97);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(184,150,62,.12);
   display:flex; align-items:center; justify-content:space-between;
   transition:all .4s ease;
 }
 nav.scrolled {
-  background:rgba(246,241,233,.95);
-  backdrop-filter:blur(14px);
+  background:rgba(246,241,233,.98);
+  backdrop-filter:blur(18px);
   padding:16px 60px;
-  border-bottom:1px solid rgba(184,150,62,.18);
-  box-shadow:0 4px 30px rgba(30,46,42,.06);
+  border-bottom:1px solid rgba(184,150,62,.22);
+  box-shadow:0 4px 30px rgba(30,46,42,.08);
 }
 .nav-logo {
   font-family:'Cormorant Garamond',serif;
@@ -169,7 +170,6 @@ nav.scrolled {
 }
 @keyframes slide { 0%{left:-100%} 100%{left:100%} }
 
-/* hero right */
 .hero-right {
   background:var(--forest); position:relative; overflow:hidden;
 }
@@ -192,10 +192,45 @@ nav.scrolled {
   font-family:'Cormorant Garamond',serif; font-style:italic;
   color:var(--ivory); animation:float1 7s ease-in-out infinite;
   box-shadow:0 24px 60px rgba(0,0,0,.3);
+  cursor:pointer; overflow:visible;
+  transition:box-shadow .3s;
+}
+.pin:hover {
+  animation-play-state:paused;
+  box-shadow:0 28px 70px rgba(0,0,0,.45), 0 0 0 3px rgba(184,150,62,.5);
 }
 .pin-text { text-align:center; padding:12px; line-height:1.4; }
 .pin-text strong { display:block; font-size:2rem; margin-bottom:2px; }
 .pin-text small { font-size:.75rem; opacity:.85; }
+
+.pin-tip {
+  position:absolute; bottom:calc(100% + 16px); left:50%;
+  transform:translateX(-50%) translateY(6px);
+  background:rgba(18,30,24,.96); border:1px solid rgba(184,150,62,.35);
+  padding:12px 18px; white-space:nowrap;
+  opacity:0; pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease;
+  font-style:normal; font-family:'Outfit',sans-serif; text-align:center;
+}
+.pin-tip::after {
+  content:''; position:absolute; top:100%; left:50%;
+  transform:translateX(-50%);
+  border:7px solid transparent;
+  border-top-color:rgba(18,30,24,.96);
+}
+.pin:hover .pin-tip {
+  opacity:1; pointer-events:all;
+  transform:translateX(-50%) translateY(0);
+}
+.pin-tip-desc {
+  display:block; font-size:.7rem; color:rgba(246,241,233,.72);
+  margin-bottom:7px; letter-spacing:.04em;
+}
+.pin-tip-cta {
+  display:inline-block; font-size:.58rem; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--gold);
+  text-decoration:none;
+}
 
 .pin:nth-child(1) {
   width:180px; height:180px;
@@ -242,7 +277,7 @@ nav.scrolled {
 
 /* ── SECTION COMMONS ── */
 .section { padding:100px 80px; }
-.sec-head { margin-bottom:64px; }
+.sec-head { margin-bottom:52px; }
 .sec-eye {
   font-size:.62rem; font-weight:500; letter-spacing:.38em; text-transform:uppercase;
   color:var(--gold); margin-bottom:16px;
@@ -255,65 +290,352 @@ nav.scrolled {
   color:var(--forest); line-height:1.08;
 }
 
-/* ── PRODUCTS ── */
-.products-grid {
-  display:grid; grid-template-columns:repeat(3,1fr);
-  gap:2px; background:var(--ivory-dark);
-}
-.card { background:var(--ivory); transition:all .3s ease; }
-.card:hover { box-shadow:0 24px 60px rgba(30,46,42,.14); z-index:2; position:relative; }
+/* ─────────────────────────────────────────────────────────────
+   ── DIGITAL PACKS — Mega Banner + Carrossel
+───────────────────────────────────────────────────────────── */
 
-.card-img {
-  aspect-ratio:1; display:flex; align-items:center;
-  justify-content:center; overflow:hidden; position:relative;
+/* Mega Pack Banner */
+.mega-pack {
+  background:var(--forest);
+  display:flex;
+  align-items:stretch;
+  border:1px solid rgba(184,150,62,.18);
+  margin-bottom:48px;
+  overflow:hidden;
+  position:relative;
 }
-.card-badge {
-  width:140px; height:140px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  transition:transform .35s ease; position:relative;
+.mega-pack-info {
+  padding:32px 40px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:16px;
+  min-width:0;
 }
-.card:hover .card-badge { transform:scale(1.07) rotate(6deg); }
-.card-badge::before {
-  content:''; position:absolute; inset:-7px;
-  border-radius:50%; border:2px solid rgba(184,150,62,.28);
+.mega-pack-cta {
+  display:flex;
+  align-items:center;
+  gap:28px;
+  flex-wrap:wrap;
 }
-.card-badge::after {
-  content:''; position:absolute; inset:-14px;
-  border-radius:50%; border:1px dashed rgba(184,150,62,.14);
+.mega-tag {
+  font-size:.58rem;
+  font-weight:500;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
-.badge-lbl {
+.mega-tag::before { content:''; width:24px; height:1px; background:var(--gold); }
+.mega-pack-title {
   font-family:'Cormorant Garamond',serif;
-  font-style:italic; color:var(--ivory);
-  text-align:center; padding:14px; line-height:1.35;
+  font-size:clamp(1.5rem,2.5vw,2.2rem);
+  font-weight:300;
+  color:var(--ivory);
+  line-height:1.1;
+  margin-bottom:8px;
 }
-.badge-lbl strong { display:block; font-size:2.2rem; margin-bottom:2px; }
-.badge-lbl span { font-size:.72rem; opacity:.85; }
-
-.card-body { padding:24px 28px 30px; border-top:1px solid var(--ivory-dark); }
-.card-cat {
-  font-size:.58rem; font-weight:500; letter-spacing:.28em;
-  text-transform:uppercase; color:var(--warm); margin-bottom:7px;
+.mega-pack-title em { font-style:italic; color:var(--gold); }
+.mega-pack-desc {
+  font-size:.74rem;
+  color:var(--warm-light);
+  line-height:1.65;
 }
-.card-name {
+.mega-pack-desc strong { color:var(--gold-light); }
+.mega-pack-note { font-size:.62rem; color:rgba(196,185,170,.5); margin-bottom:6px; letter-spacing:.08em; }
+.mega-pack-price {
   font-family:'Cormorant Garamond',serif;
-  font-size:1.3rem; font-weight:500; color:var(--forest); margin-bottom:4px;
+  font-size:3.2rem;
+  font-weight:300;
+  color:var(--gold);
+  line-height:1;
+  margin-bottom:0;
 }
-.card-desc { font-size:.76rem; color:var(--text-light); line-height:1.65; margin-bottom:20px; }
-.card-foot { display:flex; align-items:center; justify-content:space-between; }
-.card-price {
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.6rem; font-weight:500; color:var(--forest);
-}
-.card-price sub { font-size:.82rem; font-family:'Outfit',sans-serif; font-weight:300; color:var(--text-light); }
-
-.btn-buy {
+.mega-pack-price sup { font-size:1.4rem; vertical-align:super; }
+.mega-pack-price sub { font-size:1.8rem; vertical-align:baseline; }
+.btn-mega-pack {
   font-family:'Outfit',sans-serif;
-  font-size:.65rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
-  padding:11px 24px; background:var(--forest); color:var(--ivory);
-  border:none; cursor:pointer; text-decoration:none; display:inline-block;
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  padding:14px 32px;
+  background:var(--gold);
+  color:var(--forest);
+  border:none;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
   transition:background .3s;
+  white-space:nowrap;
 }
-.btn-buy:hover { background:var(--gold); }
+.btn-mega-pack:hover { background:var(--gold-light); }
+
+/* Mega Pack Montagem — parede de bottons */
+.mega-montage {
+  flex:0 0 46%;
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  grid-template-rows:repeat(3,1fr);
+  gap:2px;
+  overflow:hidden;
+}
+.mega-montage::before {
+  content:'';
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:90px;
+  background:linear-gradient(to right, var(--forest) 20%, transparent);
+  z-index:2;
+  pointer-events:none;
+}
+.mega-montage img {
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+  opacity:.72;
+  transition:opacity .3s;
+}
+.mega-montage:hover img { opacity:.85; }
+
+/* Carrossel label */
+.pack-label-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+.pack-label-row .sec-eye { margin-bottom:0; }
+.pack-label-info {
+  font-size:.7rem;
+  color:var(--text-light);
+  letter-spacing:.06em;
+}
+.pack-label-info span { color:var(--gold); font-weight:500; }
+
+/* Track do carrossel */
+.pack-track {
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  margin:0 -80px;
+  padding:4px 80px 12px;
+}
+.pack-track::-webkit-scrollbar { display:none; }
+
+/* Theme Card */
+.pk-card {
+  flex:0 0 264px;
+  scroll-snap-align:start;
+  border-radius:0;
+  overflow:hidden;
+  background:var(--ivory);
+  box-shadow:0 6px 30px rgba(30,46,42,.1);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.pk-card:hover {
+  transform:translateY(-5px);
+  box-shadow:0 16px 48px rgba(30,46,42,.18);
+}
+
+/* Topo do card — imagem */
+.pk-top {
+  height:240px;
+  position:relative;
+  overflow:hidden;
+}
+.pk-top::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 52%);
+  z-index:2;
+}
+.pk-img {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:1;
+  transition:transform .35s ease;
+}
+.pk-card:hover .pk-img { transform:scale(1.04); }
+
+/* Watermark */
+.pk-wm {
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  overflow:hidden;
+}
+.pk-wm-line {
+  position:absolute;
+  font-size:.62rem;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  transform:rotate(-32deg);
+  transform-origin:left center;
+  left:-10%;
+  mix-blend-mode:overlay;
+}
+.pk-wm-line.l1 { top:10%; color:rgba(255,255,255,.28); }
+.pk-wm-line.l2 { top:26%; color:rgba(184,150,62,.32); }
+.pk-wm-line.l3 { top:42%; color:rgba(255,255,255,.28); }
+.pk-wm-line.l4 { top:58%; color:rgba(184,150,62,.32); }
+.pk-wm-line.l5 { top:74%; color:rgba(255,255,255,.28); }
+.pk-wm-line.l6 { top:90%; color:rgba(184,150,62,.30); }
+
+/* Info sobre a imagem */
+.pk-info {
+  position:relative;
+  z-index:4;
+  padding:0 14px 14px;
+  align-self:flex-end;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+}
+.pk-label {
+  font-size:.55rem;
+  font-weight:500;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.55);
+  margin-bottom:3px;
+}
+.pk-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;
+  font-weight:400;
+  color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,.45);
+  line-height:1.1;
+}
+.pk-sheets {
+  font-size:.65rem;
+  color:rgba(255,255,255,.6);
+  margin-top:4px;
+  display:inline-block;
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(4px);
+  padding:2px 8px;
+  width:fit-content;
+}
+
+/* Botoes de compra */
+.pk-bottom {
+  padding:14px;
+  background:var(--ivory);
+  border-top:1px solid var(--ivory-dark);
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:5px;
+}
+.pk-btn {
+  display:block;
+  text-decoration:none;
+  padding:9px 4px;
+  text-align:center;
+  transition:all .18s;
+  border:1px solid transparent;
+  cursor:pointer;
+}
+.pk-btn-unit {
+  background:#F8F5EF;
+  border-color:rgba(184,150,62,.15);
+}
+.pk-btn-unit:hover {
+  border-color:var(--gold);
+  background:var(--gold-pale);
+}
+.pk-btn-mini {
+  background:var(--ivory-dark);
+  border-color:rgba(184,150,62,.28);
+}
+.pk-btn-mini:hover {
+  border-color:var(--gold);
+  background:var(--gold-pale);
+}
+.pk-btn-full {
+  background:var(--forest);
+}
+.pk-btn-full:hover { background:var(--forest-mid); }
+
+.pk-tier {
+  font-size:.52rem;
+  font-weight:500;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  margin-bottom:2px;
+}
+.pk-btn-mini .pk-tier { color:var(--warm); }
+.pk-btn-full .pk-tier { color:rgba(212,175,106,.7); }
+
+.pk-qty {
+  font-size:.66rem;
+  margin-bottom:4px;
+}
+.pk-btn-mini .pk-qty { color:var(--text-light); }
+.pk-btn-full .pk-qty { color:rgba(196,185,170,.7); }
+
+.pk-price {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;
+  font-weight:500;
+  line-height:1;
+}
+.pk-btn-mini .pk-price { color:var(--forest); }
+.pk-btn-full .pk-price { color:var(--gold-light); }
+
+/* Navegação do carrossel */
+.pack-nav {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  margin-top:20px;
+}
+.pack-dots {
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.pack-dot {
+  width:5px; height:5px; border-radius:50%;
+  background:var(--warm-light); border:none; cursor:pointer;
+  transition:all .2s; padding:0;
+}
+.pack-dot.active {
+  background:var(--gold);
+  width:18px;
+  border-radius:2px;
+}
+.pack-arrow {
+  width:34px; height:34px; border-radius:50%;
+  border:1px solid rgba(184,150,62,.3);
+  background:none; color:var(--gold);
+  font-size:14px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .2s;
+}
+.pack-arrow:hover { background:var(--forest); border-color:var(--forest); color:var(--gold-light); }
 
 /* ── SHIPPING ── */
 .ship-sec {
@@ -395,7 +717,6 @@ nav.scrolled {
 
 .mem-panel { background:var(--ivory); border:1px solid rgba(184,150,62,.18); }
 
-/* login gate */
 .gate { padding:60px 40px; text-align:center; }
 .gate-icon { width:60px; height:60px; color:var(--gold); margin:0 auto 20px; }
 .gate-title {
@@ -406,7 +727,6 @@ nav.scrolled {
 .gate .btn-primary { width:100%; text-align:center; display:block; margin-bottom:12px; }
 .gate .btn-member { width:100%; display:block; text-align:center; }
 
-/* upload area */
 .upload-wrap { padding:36px; }
 .drop-zone {
   border:2px dashed rgba(184,150,62,.28);
@@ -434,11 +754,13 @@ nav.scrolled {
 }
 .msg-field textarea:focus { border-color:var(--gold); }
 .btn-send {
-  width:100%; padding:16px; background:var(--forest); color:var(--ivory);
+  width:100%; padding:16px; background:#25D366; color:#fff;
   border:none; font-family:'Outfit',sans-serif;
-  font-size:.7rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
+  font-size:.7rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
   cursor:pointer; margin-top:14px; transition:background .3s;
+  display:flex; align-items:center; justify-content:center; gap:10px;
 }
+.btn-send:hover { background:#1DA851; }
 .btn-send:hover { background:var(--gold); }
 
 /* ── MODAL ── */
@@ -451,21 +773,18 @@ nav.scrolled {
   opacity:0; pointer-events:none; transition:opacity .3s;
 }
 .modal-bg.on { opacity:1; pointer-events:all; }
-
 .modal {
   background:var(--ivory); width:100%; max-width:430px;
   padding:48px; position:relative;
   transform:translateY(22px); transition:transform .35s ease;
 }
 .modal-bg.on .modal { transform:translateY(0); }
-
 .modal-x {
   position:absolute; top:18px; right:18px;
   background:none; border:none; cursor:pointer;
   color:var(--warm); transition:color .2s; padding:4px;
 }
 .modal-x:hover { color:var(--forest); }
-
 .modal-brand {
   font-family:'Cormorant Garamond',serif;
   font-size:1.4rem; font-weight:500;
@@ -473,7 +792,6 @@ nav.scrolled {
 }
 .modal-brand em { color:var(--gold); font-style:italic; }
 .modal-sub { font-size:.7rem; text-align:center; color:var(--text-light); letter-spacing:.08em; margin-bottom:24px; }
-
 .tabs { display:flex; border-bottom:1px solid var(--ivory-dark); margin-bottom:28px; }
 .tab {
   flex:1; padding:12px; background:none; border:none;
@@ -483,15 +801,9 @@ nav.scrolled {
   color:var(--warm); cursor:pointer; transition:all .2s;
 }
 .tab.on { color:var(--forest); border-bottom-color:var(--gold); }
-
 .pane { display:none; }
 .pane.on { display:block; animation:fadeUp .3s ease; }
-
-@keyframes fadeUp {
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 .fg { margin-bottom:18px; }
 .fl {
   display:block; font-size:.62rem; font-weight:500;
@@ -505,7 +817,6 @@ nav.scrolled {
   outline:none; transition:border-color .2s;
 }
 .fi:focus { border-color:var(--gold); }
-
 .btn-sub {
   width:100%; padding:15px; background:var(--forest); color:var(--ivory);
   border:none; font-family:'Outfit',sans-serif;
@@ -513,10 +824,345 @@ nav.scrolled {
   cursor:pointer; margin-top:6px; transition:background .3s;
 }
 .btn-sub:hover { background:var(--gold); }
-
 .sep { display:flex; align-items:center; gap:14px; margin:20px 0; }
 .sep::before,.sep::after { content:''; flex:1; height:1px; background:var(--gold-pale); }
 .sep span { font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--warm); }
+
+/* ── SHEET PICKER ── */
+.picker-bg {
+  position:fixed; inset:0;
+  background:rgba(30,46,42,.75); backdrop-filter:blur(5px);
+  display:flex; align-items:center; justify-content:center;
+  z-index:950; opacity:0; pointer-events:none; transition:opacity .3s;
+}
+.picker-bg.on { opacity:1; pointer-events:all; }
+.picker-modal {
+  background:var(--ivory); padding:36px 40px;
+  max-width:620px; width:94vw; max-height:90vh;
+  overflow-y:auto; position:relative; animation:fadeUp .3s ease;
+}
+.picker-x {
+  position:absolute; top:14px; right:14px;
+  background:none; border:none; cursor:pointer;
+  color:var(--warm); transition:color .2s; padding:4px;
+}
+.picker-x:hover { color:var(--forest); }
+.picker-tag {
+  font-size:.6rem; font-weight:500; letter-spacing:.26em;
+  text-transform:uppercase; color:var(--gold); margin-bottom:8px;
+}
+.picker-tema {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.9rem; font-weight:500; color:var(--forest);
+  margin:0 0 4px; line-height:1.1;
+}
+.picker-tema em { color:var(--gold); font-style:italic; }
+.picker-planline { font-size:.74rem; color:var(--warm); margin-bottom:18px; }
+.picker-info {
+  font-size:.78rem; color:var(--text-mid);
+  background:var(--ivory-dark); padding:10px 14px;
+  border-left:2px solid var(--gold); margin-bottom:22px; line-height:1.6;
+}
+.picker-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:10px; margin-bottom:16px;
+}
+.sheet-card {
+  position:relative; cursor:pointer;
+  border:2px solid transparent; transition:border-color .2s, transform .15s;
+  overflow:hidden; aspect-ratio:1; background:var(--ivory-dark);
+}
+.sheet-card:hover:not(.sheet-all) { transform:scale(1.03); }
+.sheet-card.selected { border-color:var(--gold); }
+.sheet-card img { width:100%; height:100%; object-fit:cover; display:block; }
+.sheet-fallback {
+  display:none; width:100%; height:100%;
+  align-items:center; justify-content:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem; color:var(--warm); flex-direction:column; gap:4px;
+}
+.sheet-num {
+  position:absolute; bottom:0; left:0; right:0;
+  font-size:.58rem; letter-spacing:.12em; text-transform:uppercase;
+  background:rgba(30,46,42,.72); color:var(--ivory);
+  padding:4px 6px; text-align:center;
+}
+.sheet-check {
+  position:absolute; top:6px; right:6px;
+  width:20px; height:20px; background:var(--gold); border-radius:50%;
+  display:none; align-items:center; justify-content:center;
+}
+.sheet-check svg { width:10px; height:10px; }
+.sheet-card.selected .sheet-check { display:flex; }
+.picker-counter {
+  font-size:.74rem; color:var(--warm);
+  text-align:center; margin-bottom:16px; min-height:20px;
+}
+.picker-add {
+  width:100%; padding:16px; background:var(--forest); color:var(--ivory);
+  border:none; font-family:'Outfit',sans-serif;
+  font-size:.7rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
+  cursor:pointer; transition:background .3s;
+}
+.picker-add:hover:not(:disabled) { background:var(--gold); }
+.picker-add:disabled { opacity:.35; cursor:not-allowed; }
+
+/* Cart badge */
+.cart-btn {
+  position:relative; background:none; border:1px solid rgba(184,150,62,.4);
+  padding:8px 14px; font-family:'Outfit',sans-serif;
+  font-size:.68rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--forest); cursor:pointer; transition:all .2s; text-decoration:none;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.cart-btn:hover { border-color:var(--gold); color:var(--gold); }
+.cart-badge {
+  background:var(--gold); color:#fff; border-radius:50%;
+  width:18px; height:18px; font-size:.6rem; font-weight:700;
+  display:none; align-items:center; justify-content:center;
+}
+.cart-badge.on { display:flex; }
+
+/* ── CART PANEL ── */
+.cart-overlay {
+  position:fixed; inset:0; background:rgba(30,46,42,.45);
+  z-index:960; opacity:0; pointer-events:none; transition:opacity .3s;
+}
+.cart-overlay.on { opacity:1; pointer-events:all; }
+.cart-panel {
+  position:fixed; top:0; right:0; bottom:0;
+  width:420px; max-width:95vw; background:var(--ivory);
+  z-index:970; display:flex; flex-direction:column;
+  transform:translateX(100%); transition:transform .38s cubic-bezier(.4,0,.2,1);
+  box-shadow:-6px 0 32px rgba(0,0,0,.14);
+}
+.cart-panel.open { transform:translateX(0); }
+.cart-head {
+  padding:22px 28px; border-bottom:1px solid var(--ivory-dark);
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+}
+.cart-head-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem; font-weight:500; color:var(--forest);
+}
+.cart-head-title em { color:var(--gold); font-style:italic; }
+.cart-close {
+  background:none; border:none; cursor:pointer;
+  color:var(--warm); transition:color .2s; padding:4px;
+}
+.cart-close:hover { color:var(--forest); }
+.cart-items { flex:1; overflow-y:auto; padding:8px 28px; }
+.cart-empty {
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:center; height:100%; gap:12px;
+  color:var(--warm); font-size:.8rem; padding:40px 0;
+}
+.cart-empty svg { opacity:.3; }
+.cart-item {
+  display:flex; gap:14px; align-items:flex-start;
+  padding:18px 0; border-bottom:1px solid var(--ivory-dark);
+}
+.cart-item-thumb {
+  width:60px; height:60px; object-fit:cover;
+  flex-shrink:0; background:var(--ivory-dark);
+}
+.cart-item-info { flex:1; min-width:0; }
+.cart-item-tema {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem; font-weight:500; color:var(--forest); margin-bottom:2px;
+}
+.cart-item-plan {
+  font-size:.6rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:3px;
+}
+.cart-item-desc { font-size:.72rem; color:var(--warm); }
+.cart-item-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+.cart-item-price { font-size:.95rem; font-weight:600; color:var(--forest); white-space:nowrap; }
+.cart-item-del {
+  background:none; border:none; cursor:pointer;
+  color:var(--warm); opacity:.55; transition:opacity .2s, color .2s; padding:2px;
+}
+.cart-item-del:hover { opacity:1; color:#c0392b; }
+.cart-foot {
+  padding:20px 28px 28px; border-top:1px solid var(--ivory-dark); flex-shrink:0;
+}
+.cart-total-row {
+  display:flex; justify-content:space-between; align-items:baseline;
+  margin-bottom:18px;
+}
+.cart-total-label {
+  font-size:.62rem; letter-spacing:.24em; text-transform:uppercase; color:var(--warm);
+}
+.cart-total-val {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem; font-weight:500; color:var(--forest);
+}
+.cart-checkout-btn {
+  width:100%; padding:16px; background:var(--forest); color:var(--ivory);
+  border:none; font-family:'Outfit',sans-serif;
+  font-size:.7rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
+  cursor:pointer; transition:background .3s;
+}
+.cart-checkout-btn:hover:not(:disabled) { background:var(--gold); }
+.cart-checkout-btn:disabled { opacity:.35; cursor:not-allowed; }
+
+/* ── CHECKOUT MODAL ── */
+.checkout-bg {
+  position:fixed; inset:0;
+  background:rgba(30,46,42,.78); backdrop-filter:blur(4px);
+  display:flex; align-items:center; justify-content:center;
+  z-index:990; opacity:0; pointer-events:none; transition:opacity .3s;
+}
+.checkout-bg.on { opacity:1; pointer-events:all; }
+.checkout-modal {
+  background:var(--ivory); padding:38px 40px;
+  max-width:500px; width:94vw; max-height:92vh;
+  overflow-y:auto; position:relative; animation:fadeUp .3s ease;
+}
+.checkout-x {
+  position:absolute; top:14px; right:14px;
+  background:none; border:none; cursor:pointer;
+  color:var(--warm); transition:color .2s; padding:4px;
+}
+.checkout-x:hover { color:var(--forest); }
+.checkout-tag {
+  font-size:.6rem; letter-spacing:.26em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:8px;
+}
+.checkout-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem; font-weight:500; color:var(--forest);
+  margin:0 0 22px; line-height:1.15;
+}
+.checkout-title em { color:var(--gold); font-style:italic; }
+.checkout-divider {
+  font-size:.6rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--warm); border-bottom:1px solid var(--ivory-dark);
+  padding-bottom:8px; margin:22px 0 14px;
+}
+.checkout-item-row {
+  display:flex; justify-content:space-between; gap:12px;
+  font-size:.8rem; color:var(--text); padding:5px 0;
+  border-bottom:1px dashed rgba(184,150,62,.22);
+}
+.checkout-item-row span:last-child { font-weight:500; white-space:nowrap; }
+.checkout-total-row {
+  display:flex; justify-content:space-between; align-items:baseline;
+  margin-top:14px;
+}
+.checkout-total-label {
+  font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--warm);
+}
+.checkout-total-val {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem; font-weight:500; color:var(--forest);
+}
+.checkout-pix-btn {
+  width:100%; padding:18px; margin-top:22px;
+  background:var(--forest); color:var(--ivory);
+  border:none; font-family:'Outfit',sans-serif;
+  font-size:.72rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  cursor:pointer; transition:background .3s;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
+.checkout-pix-btn:hover { background:var(--gold); }
+.checkout-pix-btn svg { flex-shrink:0; }
+
+/* ── PIX PAYMENT MODAL ── */
+.pix-bg {
+  position:fixed; inset:0;
+  background:rgba(30,46,42,.88); backdrop-filter:blur(5px);
+  display:flex; align-items:center; justify-content:center;
+  z-index:1000; opacity:0; pointer-events:none; transition:opacity .3s;
+}
+.pix-bg.on { opacity:1; pointer-events:all; }
+.pix-modal {
+  background:var(--ivory); padding:36px 40px;
+  max-width:460px; width:94vw; position:relative;
+  text-align:center; animation:fadeUp .3s ease;
+  max-height:92vh; overflow-y:auto;
+}
+.pix-close {
+  position:absolute; top:12px; right:14px;
+  background:none; border:none; cursor:pointer;
+  color:var(--warm); transition:color .2s; font-size:1.1rem; padding:4px 8px;
+}
+.pix-close:hover { color:var(--forest); }
+.pix-close:disabled { opacity:.3; cursor:not-allowed; }
+.pix-spinner {
+  width:44px; height:44px; margin:22px auto 16px;
+  border:3px solid var(--ivory-dark); border-top-color:var(--gold);
+  border-radius:50%; animation:pixSpin .8s linear infinite;
+}
+@keyframes pixSpin { to { transform:rotate(360deg); } }
+.pix-load-label { font-size:.82rem; color:var(--warm); }
+.pix-tag {
+  font-size:.58rem; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:8px;
+}
+.pix-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.7rem; font-weight:500; color:var(--forest); margin:0 0 14px;
+}
+.pix-qr-img {
+  width:184px; height:184px; display:block;
+  margin:0 auto 12px; border:6px solid var(--ivory-dark);
+}
+.pix-amount {
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.2rem; color:var(--forest); margin-bottom:18px;
+}
+.pix-copy-label { font-size:.68rem; color:var(--warm); margin-bottom:8px; }
+.pix-copy-box {
+  display:flex; gap:0; align-items:stretch;
+  border:1px solid var(--ivory-dark); margin-bottom:18px; overflow:hidden;
+}
+.pix-code {
+  flex:1; padding:10px 12px;
+  font-size:.64rem; color:var(--text); font-family:monospace;
+  word-break:break-all; text-align:left;
+  overflow:hidden; max-height:3.4em;
+}
+.pix-copy-btn {
+  flex-shrink:0; padding:0 16px;
+  background:var(--forest); color:var(--ivory);
+  border:none; font-size:.6rem; letter-spacing:.16em; text-transform:uppercase;
+  cursor:pointer; transition:background .2s;
+}
+.pix-copy-btn:hover { background:var(--gold); }
+.pix-waiting {
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  font-size:.74rem; color:var(--warm); margin-bottom:6px;
+}
+.pix-dot {
+  width:8px; height:8px; border-radius:50%; flex-shrink:0;
+  background:var(--gold); animation:pixPulse 1.4s ease infinite;
+}
+@keyframes pixPulse { 0%,100%{opacity:.2;transform:scale(.8)} 50%{opacity:1;transform:scale(1.2)} }
+.pix-expire { font-size:.64rem; color:rgba(139,125,107,.45); margin:0; }
+.pix-success-icon {
+  width:68px; height:68px; border-radius:50%;
+  background:var(--forest); color:var(--gold);
+  font-size:2.2rem; display:flex; align-items:center; justify-content:center;
+  margin:16px auto 18px;
+}
+.pix-success-msg {
+  font-size:.82rem; color:var(--warm); line-height:1.75; margin-bottom:24px;
+}
+.pix-done-btn {
+  padding:14px 36px; background:var(--forest); color:var(--ivory);
+  border:none; font-family:'Outfit',sans-serif;
+  font-size:.68rem; letter-spacing:.18em; text-transform:uppercase;
+  cursor:pointer; transition:background .3s;
+}
+.pix-done-btn:hover { background:var(--gold); }
+.pix-err-msg { font-size:.82rem; color:#c0392b; margin:16px 0 20px; }
+.pix-retry-btn {
+  padding:12px 28px; background:var(--forest); color:var(--ivory);
+  border:none; font-size:.66rem; letter-spacing:.16em; text-transform:uppercase;
+  cursor:pointer; transition:background .2s;
+}
+.pix-retry-btn:hover { background:var(--gold); }
 
 /* ── FOOTER ── */
 footer {
@@ -524,54 +1170,34 @@ footer {
   padding:80px;
   display:grid; grid-template-columns:2fr 1fr 1fr; gap:60px;
 }
-.ft-brand {
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.8rem; font-weight:500; color:var(--ivory); margin-bottom:14px;
-}
+.ft-brand { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:500; color:var(--ivory); margin-bottom:14px; }
 .ft-brand em { color:var(--gold); font-style:italic; }
 .ft-tag { font-size:.8rem; color:var(--warm-light); line-height:1.85; margin-bottom:30px; }
-
 .socials { display:flex; gap:14px; }
-.soc {
-  width:40px; height:40px;
-  border:1px solid rgba(184,150,62,.28);
-  display:flex; align-items:center; justify-content:center;
-  color:var(--warm-light); text-decoration:none; transition:all .2s;
-}
+.soc { width:40px; height:40px; border:1px solid rgba(184,150,62,.28); display:flex; align-items:center; justify-content:center; color:var(--warm-light); text-decoration:none; transition:all .2s; }
 .soc:hover { border-color:var(--gold); color:var(--gold); }
-
-.ft-col-title {
-  font-size:.62rem; font-weight:500; letter-spacing:.28em;
-  text-transform:uppercase; color:var(--gold); margin-bottom:24px;
-}
+.ft-col-title { font-size:.62rem; font-weight:500; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:24px; }
 .ft-links { list-style:none; display:flex; flex-direction:column; gap:12px; }
 .ft-links a { font-size:.8rem; color:var(--warm-light); text-decoration:none; transition:color .2s; }
 .ft-links a:hover { color:var(--gold); }
-
 .ft-contact { display:flex; flex-direction:column; gap:12px; }
 .ft-c { display:flex; align-items:flex-start; gap:10px; font-size:.76rem; color:var(--warm-light); }
 .ft-c svg { color:var(--gold); flex-shrink:0; margin-top:1px; }
-
-.ft-bottom {
-  background:rgba(0,0,0,.18);
-  padding:18px 80px;
-  display:flex; align-items:center; justify-content:space-between;
-}
+.ft-bottom { background:rgba(0,0,0,.18); padding:18px 80px; display:flex; align-items:center; justify-content:space-between; }
 .ft-copy { font-size:.7rem; color:var(--warm); }
 .ft-dom { font-size:.7rem; color:var(--gold); letter-spacing:.1em; }
 
-/* ── TOAST ── */
+/* ── TOAST + WHATSAPP ── */
 .toast {
   position:fixed; bottom:30px; right:30px;
   padding:15px 22px; background:var(--forest); color:var(--ivory);
   font-size:.78rem; border-left:2px solid var(--gold);
-  transform:translateY(80px); opacity:0;
+  transform:translateY(80px); opacity:0; pointer-events:none;
   transition:all .35s ease; z-index:800;
   max-width:280px; line-height:1.5;
 }
-.toast.on { transform:translateY(0); opacity:1; }
+.toast.on { transform:translateY(0); opacity:1; pointer-events:all; }
 
-/* ── WHATSAPP ── */
 .wa {
   position:fixed; bottom:30px; left:30px;
   width:52px; height:52px; background:#25D366; border-radius:50%;
@@ -582,14 +1208,42 @@ footer {
 }
 .wa:hover { transform:scale(1.1); }
 
-/* ── RESPONSIVE ── */
+.back-top {
+  position:fixed; bottom:100px; right:30px;
+  width:48px; height:48px;
+  background:var(--forest);
+  border:1px solid rgba(184,150,62,.35);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; z-index:400;
+  opacity:0; transform:translateY(14px) scale(.9);
+  pointer-events:none;
+  transition:opacity .35s ease, transform .35s ease, background .25s, border-color .25s;
+  box-shadow:0 4px 18px rgba(30,46,42,.28);
+}
+.back-top.visible {
+  opacity:1; transform:translateY(0) scale(1);
+  pointer-events:all;
+}
+.back-top:hover {
+  background:var(--gold);
+  border-color:var(--gold);
+  box-shadow:0 6px 22px rgba(184,150,62,.38);
+}
+.back-top svg {
+  color:var(--ivory);
+  transition:transform .2s;
+}
+.back-top:hover svg { transform:translateY(-2px); }
+
+/* ── RESPONSIVO ── */
 @media(max-width:1024px) {
   .hero { grid-template-columns:1fr; }
   .hero-right { display:none; }
   .hero-left { padding:130px 40px 80px; }
-  .products-grid { grid-template-columns:repeat(2,1fr); }
   .member-sec { grid-template-columns:1fr; }
   footer { grid-template-columns:1fr 1fr; }
+  .pack-track { margin:0 -40px; padding:4px 40px 12px; }
 }
 @media(max-width:768px) {
   nav { padding:18px 24px; }
@@ -599,35 +1253,51 @@ footer {
   .ship-sec { padding:64px 24px; }
   .member-sec { padding:64px 24px; gap:40px; }
   .values { grid-template-columns:1fr; }
-  .products-grid { grid-template-columns:1fr; }
   footer { grid-template-columns:1fr; padding:48px 24px; }
   .ft-bottom { padding:16px 24px; flex-direction:column; gap:8px; }
   .hero-left { padding:110px 24px 60px; }
   .scroll-hint { left:24px; }
   .modal { padding:36px 24px; }
+  .pack-track { margin:0 -24px; padding:4px 24px 12px; }
+  .mega-pack { flex-direction:column; }
+  .mega-pack-info { padding:24px; }
+  .mega-montage { flex:0 0 180px; grid-template-columns:repeat(6,1fr); grid-template-rows:repeat(3,1fr); }
+  .pk-card { flex:0 0 220px; }
+  .pk-top { height:210px; }
 }
 </style>
 </head>
 <body>
 
-<!-- WhatsApp -->
-<a class="wa" href="https://wa.me/5563992427080?text=Oi%2C%20tudo%20bem%3F%0ASou%20a%20Gracyela%2C%20da%20Memor%C3%A9%0ATrabalhamos%20com%20bottons%20personalizados%20e%20ser%C3%A1%20um%20prazer%20te%20atender!%20Me%20fala%20o%20tema%20e%20a%20quantidade%20que%20voc%C3%AA%20deseja%20para%20eu%20passar%20os%20valores" target="_blank" title="Falar no WhatsApp">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+<!-- Back to Top -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Voltar ao topo" aria-label="Voltar ao topo">
+  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+    <polyline points="18 15 12 9 6 15"/>
   </svg>
+</button>
+
+<!-- WhatsApp -->
+<a class="wa" href="https://wa.me/5563992427080" target="_blank" title="Falar no WhatsApp">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <!-- NAV -->
 <nav id="nav">
   <a href="#" class="nav-logo">Atelie <em>Memoré</em></a>
   <ul class="nav-links">
-    <li><a href="#colecao">Coleção</a></li>
+    <li><a href="#colecao">Artes Digitais</a></li>
+    <li><a href="#bottons">Bottons Físicos</a></li>
     <li><a href="#frete">Frete</a></li>
     <li><a href="#orcamento">Orçamento</a></li>
     <li><a href="#contato">Contato</a></li>
   </ul>
   <div class="nav-actions">
-    <div id="navOut"><button class="btn-member" onclick="openModal()">Entrar</button></div>
+    <button class="cart-btn" onclick="openCart()" id="cartBtn">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+      Carrinho
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <div id="navOut"><a href="#orcamento" class="btn-member">Orçamento</a></div>
     <div id="navIn" class="user-menu" style="display:none">
       <span class="user-name" id="navName"></span>
       <button class="btn-logout" onclick="logout()">Sair</button>
@@ -640,14 +1310,12 @@ footer {
   <div class="hero-left">
     <div class="eyebrow">Artesanato Premium Brasileiro</div>
     <h1 class="hero-title">Atelie<br><em>Memoré</em></h1>
-    <p class="hero-sub">Bottons e Artesanato que guardam<br>memórias. Feitos à mão,<br>com alma.</p>
+    <p class="hero-sub">Bottons que guardam<br>memórias. Feitos à mão,<br>com alma.</p>
     <div class="cta-row">
       <a href="#colecao" class="btn-primary"><span>Ver Coleção</span></a>
       <a href="#orcamento" class="btn-ghost">
         Solicitar Orçamento
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16">
-          <path d="M3 8h10M8 3l5 5-5 5"/>
-        </svg>
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 16 16"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
       </a>
     </div>
     <div class="scroll-hint"><div class="scroll-line"></div> Explorar</div>
@@ -655,14 +1323,26 @@ footer {
   <div class="hero-right">
     <div class="badges-stage">
       <div class="badges-wrap">
-        <div class="pin">
+        <div class="pin" onclick="document.getElementById('colecao').scrollIntoView({behavior:'smooth'})">
           <div class="pin-text"><strong>✦</strong><small>Memoré</small></div>
+          <div class="pin-tip">
+            <span class="pin-tip-desc">18 temas · +864 artes exclusivas</span>
+            <span class="pin-tip-cta">Ver Coleção →</span>
+          </div>
         </div>
-        <div class="pin">
+        <div class="pin" onclick="document.getElementById('orcamento').scrollIntoView({behavior:'smooth'})">
           <div class="pin-text"><strong>◈</strong><small>Artesanal</small></div>
+          <div class="pin-tip">
+            <span class="pin-tip-desc">Bottons com a sua arte</span>
+            <span class="pin-tip-cta">Fazer Orçamento →</span>
+          </div>
         </div>
-        <div class="pin">
+        <div class="pin" onclick="document.querySelector('.mega-pack').scrollIntoView({behavior:'smooth'})">
           <div class="pin-text"><strong>❋</strong><small>Premium</small></div>
+          <div class="pin-tip">
+            <span class="pin-tip-desc">Mega Pack · 18 temas · R$ 129,90</span>
+            <span class="pin-tip-cta">Ver Mega Pack →</span>
+          </div>
         </div>
       </div>
     </div>
@@ -672,38 +1352,549 @@ footer {
 <!-- VALUES -->
 <div class="values">
   <div class="val">
-    <svg class="val-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 48 48">
-      <circle cx="24" cy="24" r="18"/><circle cx="24" cy="24" r="11"/>
-      <circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>
-      <path d="M24 6v6M24 36v6M6 24h6M36 24h6"/>
-    </svg>
+    <svg class="val-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 48 48"><circle cx="24" cy="24" r="18"/><circle cx="24" cy="24" r="11"/><circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6"/></svg>
     <div class="val-title">Feito à Mão</div>
     <div class="val-desc">Cada botton produzido com atenção artesanal e máquina de precisão, garantindo qualidade e personalidade únicos.</div>
   </div>
   <div class="val">
-    <svg class="val-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 48 48">
-      <rect x="8" y="8" width="32" height="32" rx="2"/>
-      <path d="M16 24h16M24 16v16"/>
-    </svg>
+    <svg class="val-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 48 48"><rect x="8" y="8" width="32" height="32" rx="2"/><path d="M16 24h16M24 16v16"/></svg>
     <div class="val-title">100% Personalizado</div>
     <div class="val-desc">Traga sua arte, foto ou ideia. Envie sua imagem pela área de membros e receba um orçamento exclusivo.</div>
   </div>
   <div class="val">
-    <svg class="val-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 48 48">
-      <path d="M8 36l8-20 8 12 8-8 8 16"/><circle cx="38" cy="14" r="4"/>
-    </svg>
+    <svg class="val-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 48 48"><path d="M8 36l8-20 8 12 8-8 8 16"/><circle cx="38" cy="14" r="4"/></svg>
     <div class="val-title">Entrega para Todo Brasil</div>
     <div class="val-desc">Frete calculado pelo seu CEP. PAC e SEDEX disponíveis com rastreamento completo.</div>
   </div>
 </div>
 
-<!-- PRODUCTS -->
+<!-- ═══ COLEÇÃO — ARTES DIGITAIS ══════════════════════════════ -->
 <section class="section" id="colecao">
   <div class="sec-head">
     <div class="sec-eye">Coleção</div>
-    <h2 class="sec-title">Nossos<br>Bottons</h2>
+    <h2 class="sec-title">Artes de<br>Bottons</h2>
   </div>
-  <div class="products-grid" id="grid"></div>
+
+  <!-- Mega Pack Banner -->
+  <div class="mega-pack">
+    <div class="mega-pack-info">
+      <div>
+        <div class="mega-tag">Coleção Completa</div>
+        <div class="mega-pack-title">Mega Pack —<br><em>Todos os Temas</em></div>
+        <p class="mega-pack-desc">
+          <strong>18 temas · 108 folhas · +864 artes exclusivas</strong><br>
+          Animes · Bebês Frutas · Capibara · Carros · Católicos · Criança · DBZ<br>
+          Desenhos Animados · Desenhos e Animes · Digimons · Dragon Ball<br>
+          Hello Kitty · Infantil · K-Pop · Pets · Pokémon · Profissões · Variados<br>
+          <span style="color:var(--gold);font-weight:500;">Comprando por tema custaria R$ 358,20 — você economiza R$ 228,30 (64% off)</span>
+        </p>
+      </div>
+      <div class="mega-pack-cta">
+        <div>
+          <div class="mega-pack-note">entrega digital imediata</div>
+          <div class="mega-pack-price"><sup>R$</sup> 129<sub>,90</sub></div>
+        </div>
+        <a href="#mega-kirvano" class="btn-mega-pack">Comprar Coleção →</a>
+      </div>
+    </div>
+    <div class="mega-montage">
+      <img src="images/m01.png" alt=""><img src="images/m02.png" alt=""><img src="images/m03.png" alt="">
+      <img src="images/m04.png" alt=""><img src="images/m05.png" alt=""><img src="images/m06.png" alt="">
+      <img src="images/m07.png" alt=""><img src="images/m08.png" alt=""><img src="images/m09.png" alt="">
+      <img src="images/m10.png" alt=""><img src="images/m11.png" alt=""><img src="images/m12.png" alt="">
+      <img src="images/m13.png" alt=""><img src="images/m14.png" alt=""><img src="images/m15.png" alt="">
+      <img src="images/m16.png" alt=""><img src="images/m17.png" alt=""><img src="images/m18.png" alt="">
+    </div>
+  </div>
+
+  <!-- Label + carrossel -->
+  <div class="pack-label-row">
+    <div class="sec-eye" style="margin-bottom:0">Escolha um Tema</div>
+    <div class="pack-label-info">
+      <span>1 folha</span> R$ 5,90 &nbsp;·&nbsp; <span>2 folhas</span> R$ 9,90 &nbsp;·&nbsp; <span>Completo</span> todas as folhas R$ 19,90 &nbsp;·&nbsp; <span>Mega Pack</span> tudo R$ 129,90
+    </div>
+  </div>
+
+  <div class="pack-track" id="packTrack">
+
+    <!-- POKÉMON -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#CC0000,#FF9900)">
+        <img class="pk-img" src="images/pokemon.png" alt="Pokémon Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Pokémon</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-pokemon-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-pokemon-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- DRAGON BALL Z -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#E8750A,#1B6FA8)">
+        <img class="pk-img" src="images/dragonball.png" alt="Dragon Ball Z Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Dragon Ball Z</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-dbz-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-dbz-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- K-POP -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#7B1FA2,#E91E8C)">
+        <img class="pk-img" src="images/kpop.png" alt="K-Pop Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">K-Pop</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-kpop-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-kpop-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- CAPIBARA -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#5C8A2D,#8B6914)">
+        <img class="pk-img" src="images/capibara.png" alt="Capibara Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Capibara</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-capibara-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-capibara-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- ANIMES -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#6B2FBE,#2F4AC9)">
+        <img class="pk-img" src="images/animes.png" alt="Animes Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Animes</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-anime-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-anime-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- HELLO KITTY -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#FF1493,#FFB6C1)">
+        <img class="pk-img" src="images/hellokitty.png" alt="Hello Kitty Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Hello Kitty</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-hellokitty-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-hellokitty-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- DIGIMONS -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#0056A8,#E8B000)">
+        <img class="pk-img" src="images/digimons.png" alt="Digimons Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Digimons</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-digimon-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-digimon-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- INFANTIL -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#FF5722,#FFC107)">
+        <img class="pk-img" src="images/infantil.png" alt="Infantil Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Infantil</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-infantil-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-infantil-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- PETS LINDINHOS -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#8D4E12,#D4845A)">
+        <img class="pk-img" src="images/pets.png" alt="Pets Lindinhos Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Pets Lindinhos</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-pets-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-pets-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- CATÓLICOS -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#1B4F8A,#C9A227)">
+        <img class="pk-img" src="images/catolicos.png" alt="Católicos Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Católicos</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-cat-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-cat-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- CARROS -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#1C1C2E,#4A4A6A)">
+        <img class="pk-img" src="images/carros.png" alt="Carros Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Carros</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-carros-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-carros-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- PROFISSÕES MIRINS -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#1565C0,#F57C00)">
+        <img class="pk-img" src="images/profissoes.png" alt="Profissões Mirins Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Profissões Mirins</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-prof-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-prof-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- VARIADOS -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#1B5E20,#0D47A1)">
+        <img class="pk-img" src="images/variados.png" alt="Variados Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Variados</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-variados-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-variados-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- CRIANÇA -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#D81B60,#F48FB1)">
+        <img class="pk-img" src="images/crianca.png" alt="Criança Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Criança</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-crianca-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-crianca-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- DBZ -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#FF6D00,#1565C0)">
+        <img class="pk-img" src="images/dbz.png" alt="DBZ Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">DBZ</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-dbz2-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-dbz2-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- DESENHOS ANIMADOS -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#6A1B9A,#E65100)">
+        <img class="pk-img" src="images/desenhos.png" alt="Desenhos Animados Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Desenhos Animados</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-desenhos-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-desenhos-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- BEBÊS FRUTAS -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#2E7D32,#F9A825)">
+        <img class="pk-img" src="images/bebesfrutas.png" alt="Bebês Frutas Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Bebês Frutas</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-bebesfrutas-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-bebesfrutas-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+    <!-- DESENHOS E ANIMES -->
+    <div class="pk-card">
+      <div class="pk-top" style="background:linear-gradient(145deg,#283593,#AD1457)">
+        <img class="pk-img" src="images/desenhos2.png" alt="Desenhos e Animes Bottons" loading="lazy">
+        <div class="pk-wm">
+          <div class="pk-wm-line l1">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l2">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l3">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l4">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l5">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+          <div class="pk-wm-line l6">MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦ MEMORÉ BOTTONS ✦</div>
+        </div>
+        <div class="pk-info">
+          <div class="pk-label">Tema</div>
+          <div class="pk-name">Desenhos e Animes</div>
+          <div class="pk-sheets">6 folhas · 48 bottons</div>
+        </div>
+      </div>
+      <div class="pk-bottom">
+        <a href="#" class="pk-btn pk-btn-unit" onclick="openPicker(this,1);return false"><div class="pk-tier">1 Folha</div><div class="pk-qty">8 designs</div><div class="pk-price">R$ 5,90</div></a>
+        <a href="#kirvano-desenhos2-mini" class="pk-btn pk-btn-mini" onclick="openPicker(this,2);return false"><div class="pk-tier">2 Folhas</div><div class="pk-qty">16 designs</div><div class="pk-price">R$ 9,90</div></a>
+        <a href="#kirvano-desenhos2-full" class="pk-btn pk-btn-full" onclick="openPicker(this,'full');return false"><div class="pk-tier">Completo</div><div class="pk-qty">48 designs</div><div class="pk-price">R$ 19,90</div></a>
+      </div>
+    </div>
+
+  </div><!-- /.pack-track -->
+
+  <!-- Navegação do carrossel -->
+  <div class="pack-nav">
+    <button class="pack-arrow" onclick="pkShift(-1)">&#8592;</button>
+    <div class="pack-dots" id="pkDots">
+      <button class="pack-dot active" onclick="pkGoTo(0)"></button>
+      <button class="pack-dot" onclick="pkGoTo(1)"></button>
+      <button class="pack-dot" onclick="pkGoTo(2)"></button>
+      <button class="pack-dot" onclick="pkGoTo(3)"></button>
+      <button class="pack-dot" onclick="pkGoTo(4)"></button>
+      <button class="pack-dot" onclick="pkGoTo(5)"></button>
+      <button class="pack-dot" onclick="pkGoTo(6)"></button>
+      <button class="pack-dot" onclick="pkGoTo(7)"></button>
+      <button class="pack-dot" onclick="pkGoTo(8)"></button>
+      <button class="pack-dot" onclick="pkGoTo(9)"></button>
+      <button class="pack-dot" onclick="pkGoTo(10)"></button>
+      <button class="pack-dot" onclick="pkGoTo(11)"></button>
+      <button class="pack-dot" onclick="pkGoTo(12)"></button>
+      <button class="pack-dot" onclick="pkGoTo(13)"></button>
+      <button class="pack-dot" onclick="pkGoTo(14)"></button>
+      <button class="pack-dot" onclick="pkGoTo(15)"></button>
+      <button class="pack-dot" onclick="pkGoTo(16)"></button>
+      <button class="pack-dot" onclick="pkGoTo(17)"></button>
+    </div>
+    <button class="pack-arrow" onclick="pkShift(1)">&#8594;</button>
+  </div>
+
 </section>
 
 <!-- SHIPPING -->
@@ -714,7 +1905,11 @@ footer {
       Entrega
     </div>
     <h2 class="ship-title">Calcule seu<br>Frete pelo CEP</h2>
-    <p class="ship-desc">Enviamos para todo o Brasil. Insira seu CEP e veja as opções de entrega disponíveis para sua região — PAC e SEDEX com rastreamento.</p>
+    <p class="ship-desc">Enviamos bottons físicos para todo o Brasil — PAC e SEDEX com rastreamento.</p>
+    <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(184,150,62,.12);border:1px solid rgba(184,150,62,.3);padding:10px 18px;margin:16px 0 24px;border-radius:2px;">
+      <span style="color:var(--gold);font-size:1.1rem;">✦</span>
+      <span style="font-size:.74rem;color:var(--ivory);letter-spacing:.04em;"><strong style="color:var(--gold-light);">Pedido mínimo: 10 bottons físicos</strong> para viabilizar o envio.</span>
+    </div>
     <div class="cep-row">
       <input type="text" class="cep-in" id="cepIn" placeholder="00000-000" maxlength="9" autocomplete="postal-code">
       <button class="btn-cep" id="btnCep" onclick="calcFrete()">Calcular</button>
@@ -726,22 +1921,43 @@ footer {
   </div>
 </section>
 
-<!-- MEMBER -->
+<!-- ORCAMENTO -->
 <section class="member-sec" id="orcamento">
   <div>
-    <div class="sec-eye">Área de Membros</div>
-    <h2 class="mem-title">Solicite seu<br>Orçamento<br><em>Personalizado</em></h2>
-    <p class="mem-desc">Crie sua conta gratuita e envie sua arte diretamente pelo portal. Nossa equipe retorna com orçamento detalhado em até 24h.</p>
+    <div class="sec-eye">Orçamento Personalizado</div>
+    <h2 class="mem-title">Bottons com<br>a sua<br><em>Arte</em></h2>
+    <p class="mem-desc">Envie sua arte pelo formulário e receba um orçamento detalhado em até 24h via WhatsApp. Simples assim.</p>
     <ul class="mem-list">
-      <li>Upload direto de imagens e artes</li>
-      <li>Histórico de pedidos e orçamentos</li>
-      <li>Acompanhamento em tempo real</li>
-      <li>Descontos exclusivos para membros</li>
-      <li>Atendimento prioritário via WhatsApp</li>
+      <li>100% personalizado com sua foto ou arte</li>
+      <li>Medidas: 38mm · 56mm · 75mm</li>
+      <li>Pedido mínimo: 10 unidades</li>
+      <li>Orçamento respondido em até 24h</li>
+      <li>Atendimento direto via WhatsApp</li>
     </ul>
   </div>
   <div class="mem-panel">
-    <div id="panelMem"></div>
+    <div class="upload-wrap">
+      <div class="fg"><label class="fl">Seu Nome</label><input class="fi" type="text" id="qName" placeholder="Nome completo"></div>
+      <div class="fg"><label class="fl">WhatsApp com DDD</label><input class="fi" type="tel" id="qPhone" placeholder="(63) 99999-9999"></div>
+      <div class="msg-field">
+        <label>Descreva seu pedido</label>
+        <textarea id="qMsg" placeholder="Ex: 50 bottons 38mm com minha arte, fundo branco, para evento dia 20/06…"></textarea>
+      </div>
+      <div class="drop-zone" id="drop" onclick="document.getElementById('fileInp').click()">
+        <input type="file" class="file-inp" id="fileInp" multiple accept="image/*" onchange="onFiles(event)" style="display:none">
+        <svg class="drop-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 48 48">
+          <path d="M16 32s-8 0-8-8c0-4 2.5-7 6.5-8C15 9 19 6 24 6s9 3 9.5 10c4 1 6.5 4 6.5 8s-8 8-8 8"/>
+          <path d="M20 28l4-6 4 6M24 22v16"/>
+        </svg>
+        <div class="drop-title">Anexar imagem da arte</div>
+        <div class="drop-desc">Clique para selecionar ou arraste aqui<br><small style="opacity:.7">JPG · PNG — arte que será impressa no botton</small></div>
+      </div>
+      <div class="previews" id="prevs"></div>
+      <button class="btn-send" onclick="sendQuote()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enviar pelo WhatsApp
+      </button>
+    </div>
   </div>
 </section>
 
@@ -751,15 +1967,11 @@ footer {
     <div class="ft-brand">Atelie <em>Memoré</em></div>
     <p class="ft-tag">Bottons artesanais que preservam memórias, momentos e identidades. Feito com cuidado, entregue com amor.</p>
     <div class="socials">
-      <a href="#" class="soc" title="Instagram">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-        </svg>
+      <a href="https://instagram.com/memore_atelie" class="soc" title="Instagram" target="_blank" rel="noopener">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
       </a>
-      <a href="https://wa.me/5500000000000" class="soc" title="WhatsApp">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
+      <a href="https://wa.me/5563992427080" class="soc" title="WhatsApp">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       </a>
     </div>
   </div>
@@ -768,32 +1980,18 @@ footer {
     <ul class="ft-links">
       <li><a href="#colecao">Coleção de Bottons</a></li>
       <li><a href="#frete">Calcular Frete</a></li>
-      <li><a href="#orcamento">Área de Membros</a></li>
-      <li><a href="#" onclick="openModal()">Criar Conta</a></li>
+      <li><a href="#orcamento">Orçamento Personalizado</a></li>
+      <li><a href="https://wa.me/5563992427080">WhatsApp</a></li>
       <li><a href="#">Política de Privacidade</a></li>
     </ul>
   </div>
   <div>
     <div class="ft-col-title">Contato</div>
     <div class="ft-contact">
-      <div class="ft-c">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
-        </svg>
-        www.ateliememore.com.br
-      </div>
-      <div class="ft-c">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
-        </svg>
-        contato@ateliememore.com.br
-      </div>
-      <div class="ft-c">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.81 19.79 19.79 0 01.07 1.18 2 2 0 012.04 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/>
-        </svg>
-        WhatsApp disponível
-      </div>
+      <a href="https://wa.me/5563992427080" class="ft-c" style="text-decoration:none;color:inherit" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--gold)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
     </div>
   </div>
 </footer>
@@ -802,13 +2000,120 @@ footer {
   <span class="ft-dom">ateliememore.com.br</span>
 </div>
 
+<!-- SHEET PICKER -->
+<div class="picker-bg" id="pickerBg" onclick="pickerBgClick(event)">
+  <div class="picker-modal">
+    <button class="picker-x" onclick="closePicker()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="picker-tag" id="pickerTag"></div>
+    <h3 class="picker-tema" id="pickerTema"></h3>
+    <div class="picker-planline" id="pickerPlanLine"></div>
+    <div class="picker-info" id="pickerInfo"></div>
+    <div class="picker-grid" id="pickerGrid"></div>
+    <div class="picker-counter" id="pickerCounter"></div>
+    <button class="picker-add" id="pickerAdd" onclick="pickerAddToCart()" disabled>
+      Adicionar ao Carrinho →
+    </button>
+  </div>
+</div>
+
+<!-- PIX PAYMENT MODAL -->
+<div class="pix-bg" id="pixBg" onclick="if(event.target===this&&document.getElementById('pixCloseBtn')&&!document.getElementById('pixCloseBtn').disabled)closePixModal()">
+  <div class="pix-modal">
+    <button class="pix-close" id="pixCloseBtn" onclick="closePixModal()" title="Fechar">✕</button>
+
+    <div id="pixLoading">
+      <div class="pix-spinner"></div>
+      <p class="pix-load-label">Gerando cobrança PIX...</p>
+    </div>
+
+    <div id="pixQr" style="display:none">
+      <div class="pix-tag">Pagamento Seguro via PIX</div>
+      <h3 class="pix-title">Escaneie o QR Code</h3>
+      <img class="pix-qr-img" id="pixQrImg" src="" alt="QR Code PIX">
+      <div class="pix-amount" id="pixAmount">R$ 0,00</div>
+      <div class="pix-copy-label">Ou copie e cole no app do banco:</div>
+      <div class="pix-copy-box">
+        <span class="pix-code" id="pixCodeText"></span>
+        <button class="pix-copy-btn" onclick="copyPixCode()">Copiar</button>
+      </div>
+      <div class="pix-waiting">
+        <div class="pix-dot"></div>
+        Aguardando confirmação do pagamento...
+      </div>
+      <p class="pix-expire">Válido por 30 min · Os links chegam no e-mail após o pagamento</p>
+    </div>
+
+    <div id="pixSuccess" style="display:none">
+      <div class="pix-success-icon">✓</div>
+      <h3 class="pix-title">Pagamento Confirmado!</h3>
+      <p class="pix-success-msg">Os links de download foram enviados para<br><strong id="pixSuccessEmail"></strong><br>Verifique sua caixa de entrada!</p>
+      <button class="pix-done-btn" onclick="pixDone()">Concluir →</button>
+    </div>
+
+    <div id="pixError" style="display:none">
+      <p class="pix-err-msg" id="pixErrMsg">Erro ao gerar cobrança. Tente novamente.</p>
+      <button class="pix-retry-btn" onclick="retryPix()">Tentar Novamente</button>
+    </div>
+  </div>
+</div>
+
+<!-- CART PANEL -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-head">
+    <div class="cart-head-title">Meu <em>Carrinho</em></div>
+    <button class="cart-close" onclick="closeCart()" title="Fechar">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="cart-items" id="cartItemsList"></div>
+  <div class="cart-foot" id="cartFoot" style="display:none">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-val" id="cartTotalVal">R$ 0,00</span>
+    </div>
+    <button class="cart-checkout-btn" id="cartCheckoutBtn" onclick="openCheckout()" disabled>
+      Finalizar Compra →
+    </button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="checkout-bg" id="checkoutBg" onclick="if(event.target===this)closeCheckout()">
+  <div class="checkout-modal">
+    <button class="checkout-x" onclick="closeCheckout()" title="Fechar">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="checkout-tag">Pagamento Seguro</div>
+    <h2 class="checkout-title">Finalize seu<br><em>Pedido</em></h2>
+    <div class="fg">
+      <label class="fl">Nome completo</label>
+      <input class="fi" type="text" id="chkNome" placeholder="Seu nome completo">
+    </div>
+    <div class="fg" style="margin-top:12px">
+      <label class="fl">E-mail para receber os arquivos</label>
+      <input class="fi" type="email" id="chkEmail" placeholder="seu@email.com">
+    </div>
+    <div class="checkout-divider">Resumo do pedido</div>
+    <div id="checkoutSummary"></div>
+    <div class="checkout-total-row">
+      <span class="checkout-total-label">Total a pagar</span>
+      <span class="checkout-total-val" id="checkoutTotal">R$ 0,00</span>
+    </div>
+    <button class="checkout-pix-btn" id="checkoutPixBtn" onclick="gerarPix()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Gerar PIX · R$ 0,00
+    </button>
+  </div>
+</div>
+
 <!-- MODAL -->
 <div class="modal-bg" id="modalBg" onclick="bgClick(event)">
   <div class="modal">
     <button class="modal-x" onclick="closeModal()">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path d="M18 6L6 18M6 6l12 12"/>
-      </svg>
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="modal-brand">Atelie <em>Memoré</em></div>
     <div class="modal-sub">Acesso de membros</div>
@@ -816,7 +2121,6 @@ footer {
       <button class="tab on" id="tabLogin" onclick="switchTab('login')">Entrar</button>
       <button class="tab" id="tabReg" onclick="switchTab('reg')">Cadastrar</button>
     </div>
-    <!-- Login -->
     <div class="pane on" id="paneLogin">
       <div class="fg"><label class="fl">E-mail</label><input class="fi" type="email" id="lEmail" placeholder="seu@email.com"></div>
       <div class="fg"><label class="fl">Senha</label><input class="fi" type="password" id="lPass" placeholder="••••••••"></div>
@@ -824,7 +2128,6 @@ footer {
       <div class="sep"><span>ou</span></div>
       <button class="btn-member" style="width:100%;display:block;text-align:center" onclick="switchTab('reg')">Criar conta gratuita</button>
     </div>
-    <!-- Cadastro -->
     <div class="pane" id="paneReg">
       <div class="fg"><label class="fl">Nome</label><input class="fi" type="text" id="rName" placeholder="Seu nome completo"></div>
       <div class="fg"><label class="fl">E-mail</label><input class="fi" type="email" id="rEmail" placeholder="seu@email.com"></div>
@@ -840,89 +2143,33 @@ footer {
 <div class="toast" id="toast"></div>
 
 <script>
-// ── PRODUCTS DATA ─────────────────────────────────────────────
-// Para adicionar/editar produtos: altere este array.
-// checkoutUrl: cole o link de pagamento de cada produto.
-const PRODUCTS = [
-  {
-    name:'Botton Floral',
-    cat:'Coleção Natureza',
-    desc:'Arte floral delicada em fundo creme. Tamanho 38mm.',
-    price:'R$ 8,90',
-    gradient:'radial-gradient(145deg,#D4A574,#8B5E3C)',
-    icon:'✿',
-    checkoutUrl:'#checkout-floral'
-  },
-  {
-    name:'Botton Memória',
-    cat:'Linha Premium',
-    desc:'Arte exclusiva em fundo azul-noite. Ideal para presentear. 44mm.',
-    price:'R$ 12,90',
-    gradient:'radial-gradient(145deg,#2C4A6E,#1A2E44)',
-    icon:'◈',
-    checkoutUrl:'#checkout-memoria'
-  },
-  {
-    name:'Botton Personalizado',
-    cat:'Sob Encomenda',
-    desc:'Envie sua arte ou foto. Disponível em 25mm, 38mm e 58mm.',
-    price:'a partir de R$ 15,00',
-    gradient:'radial-gradient(145deg,#4A6741,#2C3E28)',
-    icon:'✦',
-    checkoutUrl:'#checkout-custom'
-  },
-  {
-    name:'Kit Especial 10un',
-    cat:'Kits & Combos',
-    desc:'10 bottons 38mm com artes variadas. Perfeito para eventos e presentes.',
-    price:'R$ 69,90',
-    gradient:'radial-gradient(145deg,#9A8B3A,#5A6020)',
-    icon:'❋',
-    checkoutUrl:'#checkout-kit10'
-  },
-  {
-    name:'Botton Aquarela',
-    cat:'Coleção Arte',
-    desc:'Efeito aquarela artístico. Cores vibrantes e únicas. 44mm.',
-    price:'R$ 10,90',
-    gradient:'radial-gradient(145deg,#B05EA0,#6B2A6E)',
-    icon:'◉',
-    checkoutUrl:'#checkout-aquarela'
-  },
-  {
-    name:'Botton Geométrico',
-    cat:'Design Moderno',
-    desc:'Padrões geométricos precisos. Minimalismo em forma de botton. 38mm.',
-    price:'R$ 9,90',
-    gradient:'radial-gradient(145deg,#3E5F8A,#1E3050)',
-    icon:'⬡',
-    checkoutUrl:'#checkout-geo'
-  }
-];
+// ── CARROSSEL DE PACKS ────────────────────────────────────────
+const pkTrack = document.getElementById('packTrack');
+const pkDots  = document.querySelectorAll('.pack-dot');
+let pkCurrent = 0;
 
-function renderProducts() {
-  document.getElementById('grid').innerHTML = PRODUCTS.map(p => `
-    <div class="card">
-      <div class="card-img" style="background:${p.gradient}18">
-        <div class="card-badge" style="background:${p.gradient}">
-          <div class="badge-lbl">
-            <strong>${p.icon}</strong>
-            <span>${p.name.split(' ').slice(1).join(' ')}</span>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="card-cat">${p.cat}</div>
-        <div class="card-name">${p.name}</div>
-        <div class="card-desc">${p.desc}</div>
-        <div class="card-foot">
-          <div class="card-price">${p.price}</div>
-          <a href="${p.checkoutUrl}" class="btn-buy">Comprar</a>
-        </div>
-      </div>
-    </div>
-  `).join('');
+function pkUpdateDots(idx) {
+  pkDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  pkCurrent = idx;
 }
+function pkGoTo(idx) {
+  const cards = pkTrack.querySelectorAll('.pk-card');
+  if (!cards[idx]) return;
+  pkTrack.scrollTo({ left: cards[idx].offsetLeft - 80, behavior: 'smooth' });
+  pkUpdateDots(idx);
+}
+function pkShift(dir) {
+  pkGoTo(Math.max(0, Math.min(17, pkCurrent + dir)));
+}
+pkTrack.addEventListener('scroll', () => {
+  const cards = pkTrack.querySelectorAll('.pk-card');
+  let closest = 0, minDist = Infinity;
+  cards.forEach((c, i) => {
+    const dist = Math.abs(c.offsetLeft - pkTrack.scrollLeft - 80);
+    if (dist < minDist) { minDist = dist; closest = i; }
+  });
+  pkUpdateDots(closest);
+}, { passive: true });
 
 // ── AUTH ──────────────────────────────────────────────────────
 let user = JSON.parse(localStorage.getItem('am_user') || 'null');
@@ -951,8 +2198,7 @@ function doLogin() {
   if (!found) { toast('E-mail ou senha incorretos.'); return; }
   user = found;
   localStorage.setItem('am_user', JSON.stringify(user));
-  closeModal();
-  updateNav();
+  closeModal(); updateNav();
   toast(`Bem-vinda de volta, ${user.name.split(' ')[0]}! ✓`);
 }
 
@@ -969,8 +2215,7 @@ function doSignup() {
   localStorage.setItem('am_users', JSON.stringify(users));
   user = newUser;
   localStorage.setItem('am_user', JSON.stringify(user));
-  closeModal();
-  updateNav();
+  closeModal(); updateNav();
   toast(`Conta criada! Bem-vinda, ${nm.split(' ')[0]}! ✓`);
 }
 
@@ -1037,43 +2282,45 @@ function initDrop() {
     addFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
   });
 }
-
 function onFiles(e) { addFiles(Array.from(e.target.files)); }
-
 function addFiles(newFiles) {
   files = [...files, ...newFiles];
   const prev = document.getElementById('prevs');
   if (!prev) return;
   prev.innerHTML = files.map(f => `<img class="prev-img" src="${URL.createObjectURL(f)}" title="${f.name}">`).join('');
 }
-
 function sendQuote() {
-  if (!files.length) { toast('Adicione pelo menos uma imagem.'); return; }
-  const msg = document.getElementById('msgTxt');
-  toast('Orçamento enviado! Retornaremos em até 24h. ✓');
+  const nome  = document.getElementById('qName').value.trim();
+  const phone = document.getElementById('qPhone').value.trim();
+  const desc  = document.getElementById('qMsg').value.trim();
+  if (!nome)  { toast('Informe seu nome.'); return; }
+  if (!phone) { toast('Informe seu WhatsApp com DDD.'); return; }
+  const linhas = [
+    `Olá! Me chamo *${nome}* (${phone}).`,
+    ``,
+    `Gostaria de solicitar um orçamento de *bottons personalizados*.`,
+  ];
+  if (desc) linhas.push(``, `*Pedido:* ${desc}`);
+  if (files.length) linhas.push(``, `Segue a arte em anexo — enviarei aqui na sequência.`);
+  linhas.push(``, `Aguardo retorno! Obrigado(a).`);
+  const texto = linhas.join('\n');
+  window.open(`https://wa.me/5563992427080?text=${encodeURIComponent(texto)}`, '_blank');
+  toast('WhatsApp aberto! Envie a imagem da sua arte no chat.');
   files = [];
-  if (msg) msg.value = '';
   const prev = document.getElementById('prevs');
   if (prev) prev.innerHTML = '';
 }
 
 // ── MODAL ─────────────────────────────────────────────────────
-function openModal() {
-  document.getElementById('modalBg').classList.add('on');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-  document.getElementById('modalBg').classList.remove('on');
-  document.body.style.overflow = '';
-}
-function bgClick(e) { if (e.target === document.getElementById('modalBg')) closeModal(); }
-
+function openModal() { document.getElementById('modalBg').classList.add('on'); document.body.style.overflow='hidden'; }
+function closeModal() { document.getElementById('modalBg').classList.remove('on'); document.body.style.overflow=''; }
+function bgClick(e) { if (e.target===document.getElementById('modalBg')) closeModal(); }
 function switchTab(t) {
-  const isLogin = t === 'login';
-  document.getElementById('tabLogin').classList.toggle('on', isLogin);
-  document.getElementById('tabReg').classList.toggle('on', !isLogin);
-  document.getElementById('paneLogin').classList.toggle('on', isLogin);
-  document.getElementById('paneReg').classList.toggle('on', !isLogin);
+  const isLogin = t==='login';
+  document.getElementById('tabLogin').classList.toggle('on',isLogin);
+  document.getElementById('tabReg').classList.toggle('on',!isLogin);
+  document.getElementById('paneLogin').classList.toggle('on',isLogin);
+  document.getElementById('paneReg').classList.toggle('on',!isLogin);
 }
 
 // ── CEP / SHIPPING ────────────────────────────────────────────
@@ -1082,10 +2329,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (inp) {
     inp.addEventListener('input', e => {
       let v = e.target.value.replace(/\D/g,'').slice(0,8);
-      if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+      if (v.length > 5) v = v.slice(0,5)+'-'+v.slice(5);
       e.target.value = v;
     });
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter') calcFrete(); });
+    inp.addEventListener('keydown', e => { if (e.key==='Enter') calcFrete(); });
   }
 });
 
@@ -1102,16 +2349,16 @@ async function calcFrete() {
   const val = document.getElementById('cepIn').value.replace(/\D/g,'');
   const btn = document.getElementById('btnCep');
   const res = document.getElementById('shipResult');
-  if (val.length !== 8) { toast('CEP inválido. Digite os 8 dígitos.'); return; }
-  btn.textContent = '…'; btn.disabled = true;
+  if (val.length!==8) { toast('CEP inválido. Digite os 8 dígitos.'); return; }
+  btn.textContent='…'; btn.disabled=true;
   try {
     const r = await fetch(`https://viacep.com.br/ws/${val}/json/`);
     const d = await r.json();
-    btn.textContent = 'Calcular'; btn.disabled = false;
+    btn.textContent='Calcular'; btn.disabled=false;
     if (d.erro) { toast('CEP não encontrado.'); return; }
     const opts = SHIP[d.uf] || DEFAULT_SHIP;
     document.getElementById('shipAddr').innerHTML =
-      `<strong>${d.localidade} — ${d.uf}</strong>${d.logradouro ? '<br>' + d.logradouro + (d.bairro ? ', ' + d.bairro : '') : ''}`;
+      `<strong>${d.localidade} — ${d.uf}</strong>${d.logradouro ? '<br>'+d.logradouro+(d.bairro?', '+d.bairro:'') : ''}`;
     document.getElementById('shipOpts').innerHTML = opts.map(o => `
       <div class="ship-opt">
         <div class="ship-opt-name">${o.n}</div>
@@ -1121,28 +2368,409 @@ async function calcFrete() {
     `).join('');
     res.classList.add('on');
   } catch {
-    btn.textContent = 'Calcular'; btn.disabled = false;
+    btn.textContent='Calcular'; btn.disabled=false;
     toast('Erro ao consultar CEP. Tente novamente.');
   }
 }
 
-// ── NAV SCROLL ────────────────────────────────────────────────
+// ── DRIVE MAP ─────────────────────────────────────────────────
+const DRIVE_MAP = {
+  animes:           { nome:'Animes',           folhas:['1aiurfEZvywEsWfvXSP61dknFxbvyL2Ur','1aTr2NEfg7IPyle3IDDJmXqntk9AML1gX','1jKF-qbBNPPjdjfsl7rhZ_mCDywtTb7FU','1iID3lCv6KOdoSEmpEKghm7G6-Nz2blXX','1UdWfv5mbUgGW0xxWBJbc2HwFJYKI_Wxh','1qKpPtgsh6r6w5Sr7OkZ8ZYlpGPjeU1U7'] },
+  bebesFrutas:      { nome:'Bebês Frutas',      folhas:['19elsLdmOMB-vbQgfL9cMs5KAcuWN4mWD','1OnLSiVtbGhC54S6XyKLSqyXmDnaKTpy1','11HTT7fwmvHP4oq8k1O-BAxhQkK3PeVRX','1tnaGWEg4XfYVLOmPLauKU6z2hjZ_rgti','1e6Ja_0EQ5l6pZlCoARMLotiTvF9rt7Zk','112PpAnvRiuTCU-GqCzgCIFVeqr-ebslk'] },
+  capibara:         { nome:'Capibara',          folhas:['1JasYuTxCTCb7DJGgsaiJO9VKrDG7GEVD','1jNk1FONIfUXEmn9qDlitKyIgb2GbY89O','1Dz8zVGz3bZVt9YsxaxJPylLGxADlmRE-','1DErqfBFz9W8vDhX7t_S08pSqx2ooCR_3','10qqQYx1bMVG_hNwvcyvk1TFBMQmW03g6','1jU9KiOuVYMV4ZkiXOyqeXfcs9yaatV4y'] },
+  carros:           { nome:'Carros',            folhas:['1gK_Ss0vEJf2mbUlQLcW38OGQRxIcOmkO','1gaFgbAiHoemD0L9VqcIm5gIr3zC87uiy','1SDbahvrMXC_-A_iFNhY4rfvo70E-3mY_','1KnMNCECY1krcGP7r4zNOCGNZFlKIOKy0','1e7mWbyhxEwuWNw5h4KngBqaivAl6PnLZ','1vCvmEPhfHqVgdBmc5m10jS5H2siKwQaO'] },
+  catolicos:        { nome:'Católicos',         folhas:['1UoarhE279KUF7O0sxnCASKCzygLAUJXL','1rJ_FwBSIEC4dLxTI2IxDx4Ca8C9CyhSE','1MSIiQYsuaNJSad3L6coeWOMpYxG_cWi8','1E4OkTwIuMc8edAbNzTkrp2nzXfVXXlUs','1Lx46HjMPAkeHcEQ9HjI-3WAMB2e63kMi','1xplVpMTcPBQHbLuwvUgVbySdBLvMg02E'] },
+  crianca:          { nome:'Criança',           folhas:['1zZvxKif7MS7EUTVwRF2wS7EIVZmd9cm4','19efTvph_BetPHk-BZ_XGSFOX9H9uQ7wP','1F3KCYDOqz4xboof-j-DBxCyb3dWz3sPf','1Uv89LQ1tXJThIk2VujTnc4nZERyPdwUW','15mNYFl67o0U5KHwlDDv9rsDAaYmDjawR','1ZBBEGwpU07psyhM3_T6I8LU8PnvKxESz'] },
+  dbz:              { nome:'DBZ',              folhas:['1MzVKIdE4EmxGFhujv-ngNHixl8bBeCJn','1to4xICrXr81WRTdtrmX9kKN9HwSqdkJd','156-yW7UenYHKRZy4el9bnJgIv2yGOuy3','1V0iOEcR1ujk2_GflAu4Vtpx-iwVvbEsC','1CLzhrJKJuuV5NXb-mSYshJG_0RyNEDvM','1xgL8uhIdyVL2M0Amc6TDAc68d1Pp0mOb'] },
+  desenhosAnimados: { nome:'Desenhos Animados', folhas:['1FjqOkUG-lNGEtY-0OITEPu31Q8Jf0oIb','1JwBBJPP2-5BKSG9TFkZi5Po7cc5rpBFL','1wWZa0OpT2gQ_tqB67LoQs7ukiqcfQi2m','1LTR-zwmBOz3pyOya17fC4ZU4dlrJMdNW','187CmFrPdxnuoxsUva-dgcANTPSEtJ_nj','1mf7a6wpyWbUrtqL3Y8ClMAFfzBR3Nnh5'] },
+  desenhosAnimes:   { nome:'Desenhos e Animes', folhas:['1pNNSnGKoaaEGFg04gMA8lBQ2vt6bk0-y','1u8f8ps3LA_gMbSw_qEE3z8YC-J377adJ','1E1XFunWclHVwcv67YocjNwlKKKefbYTQ','1viSdI8PVevqfjpDqM0zQyfiqs_ydoT8h','1dQN7-XdGUUlxnR5mAW7fa-vURJhEAJr2','12bEKlMldWt9NWohly0zvODLDATlwA3iW'] },
+  digimons:         { nome:'Digimons',          folhas:['1SBUQw_BiFD5-UgTNXcx8-FoJVzBG739t','1hh3yeOpo9QqhCBLOMkPoFNz3uGPJiF_W','1lJ2J_k9RAWGJiHxRWDU-X-Ke9fnQbmq4','1zx2r_G7UL1g6cyjIPmzPG7tBj2mDi3In','1qWVPq8TVTxSiXmjqw8uhl1GEVTj17L26','1ZhSOyOhUh1PnP4ddrAIoRuRMlJK_Ug00'] },
+  dragonBall:       { nome:'Dragon Ball Z',     folhas:['1pfQo1cg_358HDcT7wAjnhHTLhNcIlXgB','1UfwNfBuSW0ycHnqHFg_6HSOE4_7S4O4n','1g4oS18ybgIYNSEMZTdiG5cVr0R4dIa_7','1UEoPA3yE83YkFCeIdnuCtDhW8phmsW4E','1xVPeU4lLnZfpWKgGYx0Qq0GBsNfQVNHk','1T2weanL8LxfZqAVUp3Q64pXEu2KF17DY'] },
+  helloKitty:       { nome:'Hello Kitty',       folhas:['1XMpHhAmbDRfbm_GJKlU_Nu1S-PEXdn6p','15fnYWFW3U3cGQ2QkL8ibd5Cc82wUYI0p','14CUTVHNjqLvDkVlacXRV3WYYKQojgNMW','1qyN_yvHTSZMmJl8bPzMPiP4aRlYDvzDq','1mEXWwBE9Jrih3AnuwYV6vdvZM-mLdWwe','1JVYfpJngRXBDzFF6LdcOJdfTpsjzGX52'] },
+  infantil:         { nome:'Infantil',           folhas:['1X1JhGrKnUifGQJ2YPMcIbCrH72LNwJGd','1KU31geEvXI1QHCSWsamN6qoceTPIIyvk','1VG-zdeDEtl8vxB7p-dPxrAhcfE5q9PwI','1uCo1yObL-tyN7VwrZfggID6Pm5xUPdhw','1-XK2BnyUEWnv91nz2XmgYfWEP8Q7f_pL','1vTMDjpgl08zggwOkmFcZMdinc5TMWMn1'] },
+  kpop:             { nome:'K-POP',             folhas:['1lUULyfKXIjB45kIJ2WFMuzMmwdWCFOHZ','14fldOn2vYC2aQ8YvtKWhsKd3rQbEMCsO','1Hw4Thrb-6GZcqD1HSznefIM9D5yqEhWJ','1TVqhasQ2VAX0pAPzstH8VZTXrNZPJtAw','1EzFOw4tA9qB1uHsmE32DMiIR8WaMKW2B','1n6Sjc-UDEc30-Pdmf08cxe_rS5MJDimd'] },
+  petsLindinhos:    { nome:'Pets Lindinhos',    folhas:['1Jnu89D73gwUGThfn-7AoilA30nYBtTef','1SLsE28l5Uv9DtCIY-K1c6Lw7mGC4uo1t','1T9HEw_0Ju5cviRj7h9eZ83ovaEcFEBOh','1ly80bvOpcNjjKl4UJbN2n6rRjGXNdu9p','1RXc3FJwa2uCf38MZ2zaIr4cESSUpwHqw','1KfKdxYdHPgDFhW-LzB-oXTeWzUWDntGY'] },
+  pokemons:         { nome:'Pokémon',           folhas:['16g9HoWSxo6rD8KrIPvr10DAcbcJhXM0U','1ouFH8Lhid3g1nQ-Wg5nCLjzZEfq011ta','1yFcilv8ECq6_3bWHUPzHXhVc0PqHGYoq','1P4pqRPEVF98A0HRgyzYgGRH49bTzLMKh','1TK-jXldfrgnOWaoeXal47M0j9mDhO3jD','14h7VlJD1pfpPexsSaH7Wcl448rOnkkxM'] },
+  profissoesMirins: { nome:'Profissões Mirins', folhas:['1_HKfmR7nklPWOr6BuP4oZnwE4786a1bq','1LENlFVYPNcoSa6aBrntb5DTYXhpG6DPL','1atRvKrbAmjIWGJ_8L4ApSTUMpxeT9GTQ','1qfy4srM9ipy4SqMyoXJiMdimNHf-WUzf','1JkNUBLs-ds_Fac_FhAOFQO5MeL7GNgEn','1beTuuFbAGAeTHqszHGo47y2fsWYQGNYb'] },
+  variados:         { nome:'Variados',          folhas:['1fGYH6AHDhExBfkVljNdZoG8FrEuzjcN1','1aQxpTKAzEzkClD6zW1Wzyh0ZceMV6CRk','1w8ouJnzzOCQg2UBvFUfk0izuw5tzm1hQ','10OT_4Hegt0D-iXD23vducQFizXFw7Mkv','1N304i0glzF-iBLBvxi1yUFZi1gSXfXVR','1KDVL7PkZGgG5JrsBuYbRoR_ThCO_xi-6'] },
+};
+
+// Mapa imagem → chave do tema
+const CARD_TEMA = {
+  'pokemon.png':'pokemons','dragonball.png':'dragonBall','kpop.png':'kpop',
+  'capibara.png':'capibara','animes.png':'animes','hellokitty.png':'helloKitty',
+  'digimons.png':'digimons','infantil.png':'infantil','pets.png':'petsLindinhos',
+  'catolicos.png':'catolicos','carros.png':'carros','profissoes.png':'profissoesMirins',
+  'variados.png':'variados','crianca.png':'crianca','dbz.png':'dbz',
+  'desenhos.png':'desenhosAnimados','bebesfrutas.png':'bebesFrutas','desenhos2.png':'desenhosAnimes',
+};
+
+// ── CARRINHO FLUTUANTE ────────────────────────────────────────
+let cart = [];
+
+function cartAdd(item) {
+  const idx = cart.findIndex(c => c.temaKey === item.temaKey && c.plan === item.plan);
+  if (idx > -1) cart[idx] = item; else cart.push(item);
+  updateCartBadge();
+}
+
+function updateCartBadge() {
+  const badge = document.getElementById('cartBadge');
+  if (!badge) return;
+  badge.textContent = cart.length;
+  badge.classList.toggle('on', cart.length > 0);
+}
+
+function openCart() {
+  renderCartItems();
+  document.getElementById('cartOverlay').classList.add('on');
+  document.getElementById('cartPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('on');
+  document.getElementById('cartPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function removeFromCart(idx) {
+  cart.splice(idx, 1);
+  updateCartBadge();
+  renderCartItems();
+}
+
+function renderCartItems() {
+  const list  = document.getElementById('cartItemsList');
+  const foot  = document.getElementById('cartFoot');
+  const btn   = document.getElementById('cartCheckoutBtn');
+  if (!list) return;
+
+  if (!cart.length) {
+    list.innerHTML = `<div class="cart-empty">
+      <svg width="52" height="52" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      Nenhum item no carrinho ainda.
+    </div>`;
+    foot.style.display = 'none';
+    return;
+  }
+
+  const total = cart.reduce((s, i) => s + i.price, 0);
+  foot.style.display = 'block';
+  btn.disabled = false;
+
+  list.innerHTML = cart.map((item, idx) => {
+    const firstId   = item.driveIds && item.driveIds[0];
+    const thumbHtml = firstId
+      ? `<img class="cart-item-thumb" src="https://drive.google.com/thumbnail?id=${firstId}&sz=w80-h80" alt="${item.temaNome}" onerror="this.style.display='none'">`
+      : `<div class="cart-item-thumb" style="display:flex;align-items:center;justify-content:center;font-size:1.4rem">◈</div>`;
+    const sheetsDesc = item.plan === 'Completo'
+      ? `Todas as ${item.sheets.length} folhas · ${item.sheets.length * 8} designs`
+      : `Folha${item.sheets.length > 1 ? 's' : ''} ${item.sheets.map(s => s + 1).join(' e ')} · ${item.sheets.length * 8} designs`;
+    return `<div class="cart-item">
+      ${thumbHtml}
+      <div class="cart-item-info">
+        <div class="cart-item-tema">${item.temaNome}</div>
+        <div class="cart-item-plan">${item.plan}</div>
+        <div class="cart-item-desc">${sheetsDesc}</div>
+      </div>
+      <div class="cart-item-right">
+        <div class="cart-item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</div>
+        <button class="cart-item-del" onclick="removeFromCart(${idx})" title="Remover">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/>
+          </svg>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('cartTotalVal').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+}
+
+// ── CHECKOUT ──────────────────────────────────────────────────
+function openCheckout() {
+  if (!cart.length) return;
+  const total = cart.reduce((s, i) => s + i.price, 0);
+  const fmtTotal = `R$ ${total.toFixed(2).replace('.', ',')}`;
+
+  document.getElementById('checkoutSummary').innerHTML = cart.map(item =>
+    `<div class="checkout-item-row">
+      <span>${item.temaNome} — ${item.plan}</span>
+      <span>R$ ${item.price.toFixed(2).replace('.', ',')}</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('checkoutTotal').textContent = fmtTotal;
+  document.getElementById('checkoutPixBtn').innerHTML =
+    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+     </svg> Gerar PIX · ${fmtTotal}`;
+
+  closeCart();
+  document.getElementById('checkoutBg').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCheckout() {
+  document.getElementById('checkoutBg').classList.remove('on');
+  document.body.style.overflow = '';
+}
+
+// ── PIX PAYMENT ───────────────────────────────────────────────
+const N8N_BASE = 'https://n8n.srv1630757.hstgr.cloud/webhook';
+
+let pixTxid        = '';
+let pixInterval    = null;
+let pixPendingOrder = null;
+
+function gerarPix() {
+  const nome  = document.getElementById('chkNome').value.trim();
+  const email = document.getElementById('chkEmail').value.trim();
+  if (!nome)  { toast('Informe seu nome para continuar.'); return; }
+  if (!email || !email.includes('@')) { toast('Informe um e-mail válido para receber os arquivos.'); return; }
+
+  const total = cart.reduce((s, i) => s + i.price, 0);
+  pixPendingOrder = { nome, email, items: cart.slice(), total };
+
+  closeCheckout();
+  openPixModal();
+  showPixState('loading');
+
+  fetch(`${N8N_BASE}/memore/criar-pix`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      nome, email,
+      items: cart.map(i => ({
+        temaKey: i.temaKey, temaNome: i.temaNome,
+        plan: i.plan, price: i.price,
+        sheets: i.sheets, driveIds: i.driveIds,
+      })),
+      total: total.toFixed(2),
+    }),
+  })
+  .then(r => { if (!r.ok) throw new Error(`Erro ${r.status}`); return r.json(); })
+  .then(data => {
+    pixTxid = data.txid;
+    const img = document.getElementById('pixQrImg');
+    if (data.qrcode_image) img.src = data.qrcode_image;
+    else img.style.display = 'none';
+    document.getElementById('pixCodeText').textContent = data.pix_code;
+    document.getElementById('pixAmount').textContent = `R$ ${parseFloat(data.total).toFixed(2).replace('.', ',')}`;
+    showPixState('qr');
+    startPaymentPolling(data.txid);
+  })
+  .catch(err => {
+    document.getElementById('pixErrMsg').textContent = `Erro ao gerar PIX: ${err.message}`;
+    showPixState('error');
+  });
+}
+
+function openPixModal() {
+  document.getElementById('pixBg').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePixModal() {
+  if (pixInterval) { clearInterval(pixInterval); pixInterval = null; }
+  document.getElementById('pixBg').classList.remove('on');
+  document.body.style.overflow = '';
+}
+
+function showPixState(state) {
+  ['Loading','Qr','Success','Error'].forEach(s => {
+    const el = document.getElementById('pix' + s);
+    if (el) el.style.display = (s.toLowerCase() === state) ? '' : 'none';
+  });
+  const cb = document.getElementById('pixCloseBtn');
+  if (cb) cb.disabled = (state === 'loading');
+}
+
+function copyPixCode() {
+  const code = document.getElementById('pixCodeText').textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code).then(() => toast('Código PIX copiado!'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = code; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); toast('Código PIX copiado!');
+  }
+}
+
+function startPaymentPolling(txid) {
+  pixInterval = setInterval(() => {
+    fetch(`${N8N_BASE}/memore/verificar-pix?txid=${encodeURIComponent(txid)}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'CONCLUIDA') {
+          clearInterval(pixInterval); pixInterval = null;
+          const emailEl = document.getElementById('pixSuccessEmail');
+          if (emailEl) emailEl.textContent = pixPendingOrder?.email || '';
+          showPixState('success');
+          cart = []; updateCartBadge();
+        }
+      })
+      .catch(() => {});
+  }, 5000);
+}
+
+function pixDone() { closePixModal(); }
+
+function retryPix() {
+  closePixModal();
+  if (pixPendingOrder) {
+    document.getElementById('chkNome').value  = pixPendingOrder.nome;
+    document.getElementById('chkEmail').value = pixPendingOrder.email;
+    document.getElementById('checkoutBg').classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+// ── SHEET PICKER ──────────────────────────────────────────────
+let pickerTemaKey = '';
+let pickerPlan    = 1;
+let pickerSel     = [];
+
+const PLAN_PRICE  = { 1:'5,90', 2:'9,90', full:'19,90' };
+const PLAN_LABEL  = { 1:'1 Folha', 2:'2 Folhas', full:'Completo' };
+const PLAN_MAX    = { 1:1, 2:2, full:99 };
+
+function openPicker(btn, plan) {
+  const card = btn.closest('.pk-card');
+  if (!card || !card.dataset.tema) return;
+  const temaKey = card.dataset.tema;
+  const tema    = DRIVE_MAP[temaKey];
+  if (!tema) return;
+
+  pickerTemaKey = temaKey;
+  pickerPlan    = plan;
+  pickerSel     = plan === 'full' ? tema.folhas.map((_,i) => i) : [];
+
+  document.getElementById('pickerTag').textContent =
+    plan === 'full' ? 'Tema Completo' : 'Selecione as Folhas';
+  document.getElementById('pickerTema').innerHTML = `<em>${tema.nome}</em>`;
+  document.getElementById('pickerPlanLine').textContent =
+    `${PLAN_LABEL[plan]} · R$ ${PLAN_PRICE[plan]}`;
+  document.getElementById('pickerInfo').textContent =
+    plan === 1
+      ? 'Escolha 1 folha. Cada folha tem 8 designs prontos para impressão.'
+      : plan === 2
+      ? 'Escolha 2 folhas. Cada folha tem 8 designs prontos para impressão.'
+      : `Você receberá todas as ${tema.folhas.length} folhas (${tema.folhas.length * 8} designs) deste tema.`;
+
+  renderPickerGrid(tema);
+  updateCounter();
+
+  if (plan === 'full') {
+    document.getElementById('pickerAdd').disabled = false;
+  }
+
+  document.getElementById('pickerBg').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderPickerGrid(tema) {
+  const grid = document.getElementById('pickerGrid');
+  grid.innerHTML = tema.folhas.map((fid, i) => {
+    const sel  = pickerSel.includes(i);
+    const thumb = `https://drive.google.com/thumbnail?id=${fid}&sz=w280-h280`;
+    return `
+      <div class="sheet-card${sel ? ' selected' : ''}" onclick="selectSheet(${i})" id="sc_${i}">
+        <img src="${thumb}" alt="Folha ${i+1}" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="sheet-fallback">◈<br><small>Folha ${i+1}</small></div>
+        <div class="sheet-num">Folha ${i+1} · 8 designs</div>
+        <div class="sheet-check">
+          <svg fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function selectSheet(idx) {
+  if (pickerPlan === 'full') return;
+  const max = PLAN_MAX[pickerPlan];
+  const pos = pickerSel.indexOf(idx);
+  if (pos > -1) {
+    pickerSel.splice(pos, 1);
+  } else {
+    if (pickerSel.length >= max) pickerSel.shift();
+    pickerSel.push(idx);
+  }
+  document.querySelectorAll('.sheet-card').forEach((c, i) => {
+    c.classList.toggle('selected', pickerSel.includes(i));
+  });
+  updateCounter();
+}
+
+function updateCounter() {
+  const max = PLAN_MAX[pickerPlan];
+  const sel = pickerSel.length;
+  document.getElementById('pickerCounter').textContent =
+    pickerPlan === 'full'
+      ? `Todas as folhas incluídas`
+      : `${sel} de ${max} folha${max > 1 ? 's' : ''} selecionada${max > 1 ? 's' : ''}`;
+  document.getElementById('pickerAdd').disabled = sel < max && pickerPlan !== 'full';
+}
+
+function pickerAddToCart() {
+  const tema = DRIVE_MAP[pickerTemaKey];
+  cartAdd({
+    temaKey:  pickerTemaKey,
+    temaNome: tema.nome,
+    plan:     PLAN_LABEL[pickerPlan],
+    price:    parseFloat(PLAN_PRICE[pickerPlan].replace(',','.')),
+    sheets:   [...pickerSel],
+    driveIds: pickerSel.map(i => tema.folhas[i]),
+  });
+  closePicker();
+  toast(`${tema.nome} — ${PLAN_LABEL[pickerPlan]} adicionado! ✓`);
+}
+
+function closePicker() {
+  document.getElementById('pickerBg').classList.remove('on');
+  document.body.style.overflow = '';
+  pickerSel = [];
+}
+
+function pickerBgClick(e) {
+  if (e.target === document.getElementById('pickerBg')) closePicker();
+}
+
+// ── NAV SCROLL + BACK TO TOP ──────────────────────────────────
 window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+  const y = window.scrollY;
+  document.getElementById('nav').classList.toggle('scrolled', y > 50);
+  document.getElementById('backTop').classList.toggle('visible', y > 300);
 });
 
 // ── TOAST ─────────────────────────────────────────────────────
 let toastT;
 function toast(msg) {
   const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('on');
+  el.textContent=msg; el.classList.add('on');
   clearTimeout(toastT);
   toastT = setTimeout(() => el.classList.remove('on'), 3800);
 }
 
 // ── INIT ──────────────────────────────────────────────────────
-renderProducts();
 updateNav();
+
+// Atribui data-tema a cada card do carrossel
+document.querySelectorAll('.pk-card').forEach(card => {
+  const img = card.querySelector('.pk-img');
+  if (!img) return;
+  const filename = img.src.split('/').pop().split('?')[0];
+  const key = CARD_TEMA[filename];
+  if (key) card.dataset.tema = key;
+});
 </script>
 </body>
 </html>
