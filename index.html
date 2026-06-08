@@ -367,6 +367,18 @@ nav.scrolled {
 }
 .mega-pack-price sup { font-size:1.4rem; vertical-align:super; }
 .mega-pack-price sub { font-size:1.8rem; vertical-align:baseline; }
+.mega-price-de {
+  font-size:.68rem; letter-spacing:.06em; color:rgba(196,185,170,.55);
+  margin-bottom:2px;
+}
+.mega-price-de s { text-decoration-color:rgba(184,150,62,.6); }
+.mega-price-por {
+  display:flex; align-items:baseline; gap:8px;
+}
+.mega-price-por > span {
+  font-size:.62rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--gold); font-weight:500;
+}
 .btn-mega-pack {
   font-family:'Outfit',sans-serif;
   font-size:.68rem;
@@ -1413,7 +1425,8 @@ footer {
       <div class="mega-pack-cta">
         <div>
           <div class="mega-pack-note">entrega digital imediata</div>
-          <div class="mega-pack-price"><sup>R$</sup> 129<sub>,90</sub></div>
+          <div class="mega-price-de">de <s>R$ 358,20</s></div>
+          <div class="mega-price-por"><span>por</span><div class="mega-pack-price"><sup>R$</sup> 129<sub>,90</sub></div></div>
         </div>
         <a href="#mega-kirvano" class="btn-mega-pack">Comprar Coleção →</a>
       </div>
