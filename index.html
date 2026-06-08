@@ -2637,9 +2637,13 @@ function gerarPix() {
   openPixModal();
   showPixState('loading');
 
+  const _ctrl = new AbortController();
+  const _tid  = setTimeout(() => _ctrl.abort(), 50000);
+
   fetch(`${N8N_BASE}/memore/criar-pix`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    signal: _ctrl.signal,
     body: JSON.stringify({
       nome, email,
       items: cart.map(i => ({
@@ -2650,19 +2654,32 @@ function gerarPix() {
       total: total.toFixed(2),
     }),
   })
-  .then(r => { if (!r.ok) throw new Error(`Erro ${r.status}`); return r.json(); })
+  .then(async r => {
+    clearTimeout(_tid);
+    const text = await r.text();
+    if (!text) throw new Error('Servidor PIX não respondeu. Tente novamente em instantes.');
+    try { return JSON.parse(text); } catch(e) { throw new Error('Resposta inválida do servidor PIX.'); }
+  })
   .then(data => {
     pixTxid = data.txid;
     const img = document.getElementById('pixQrImg');
-    if (data.qrcode_image) img.src = data.qrcode_image;
-    else img.style.display = 'none';
+    if (data.pix_code) {
+      img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(data.pix_code);
+      img.style.display = 'block';
+    } else {
+      img.style.display = 'none';
+    }
     document.getElementById('pixCodeText').textContent = data.pix_code;
     document.getElementById('pixAmount').textContent = `R$ ${parseFloat(data.total).toFixed(2).replace('.', ',')}`;
     showPixState('qr');
     startPaymentPolling(data.txid);
   })
   .catch(err => {
-    document.getElementById('pixErrMsg').textContent = `Erro ao gerar PIX: ${err.message}`;
+    clearTimeout(_tid);
+    const msg = err.name === 'AbortError'
+      ? 'Tempo esgotado (50s). O servidor PIX está lento — tente novamente em instantes.'
+      : `Erro ao gerar PIX: ${err.message}`;
+    document.getElementById('pixErrMsg').textContent = msg;
     showPixState('error');
   });
 }
